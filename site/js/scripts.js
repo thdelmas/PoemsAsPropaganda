@@ -29,11 +29,10 @@ function delay(delayInms) {
 
 async function fadein() {
 
+	const mode2 = Math.floor(Math.random()*2)
 	const x = Array.from(document.querySelectorAll('.letter:not(.silent)'))
- 
+	var t = 0.42
 	const promise = x.map(async (elem) => {
-
-
 		elem.onmouseover = async function(){
 			color = (color + 1) % 4
 			elem.style.color = colors[color];
@@ -41,25 +40,30 @@ async function fadein() {
 			elem.style.color = colors[1];
 		}
 		elem.style.color = colors[0]
-		await delay((Math.floor(Math.random() * 42 * 1000) / 2))
+
+		let getUrl = window.location;
+		let baseUrl = getUrl.pathname.split('/');
+		if (baseUrl[baseUrl.length - 1] === "index.html") {
+			t += 0.21
+		} else {
+			t += 0.315
+		}
+		if (mode2 == 0)
+		{
+			await delay((Math.floor(Math.random() * t * 1000)))
+			elem.style.color = colors[(color++ + 1) % 4]
+			await delay((Math.floor(Math.random() * t * 1000) / 2))
+		}
+		else {
+			await delay(t * 500)
+			elem.style.color = colors[(color++ + 1) % 2 + 1]
+			await delay((Math.floor(Math.random() * t * 1000) / 2) + 4200)
+		}
 		elem.style.color = colors[(color++ + 1) % 4]
-		await delay((Math.floor(Math.random() * 42 * 1000) / 2))
+		await delay((Math.floor(Math.random() * t * 1000) / 2) + 4200)
 		elem.style.color = colors[1];
 	})
 	await Promise.all(promise)
-	// for (let i = 0; i < x.length; i++) {
-	// let time = (Math.floor(Math.random() * 1500)) / 2;
-	// let elem = x[i]
-	// elem.style.color = colors[0]
-	// setTimeout(() => { elem.style.color = colors[1]; console.log("reset") }, 42 * time);
-
-	// 	x[i].onmouseover = function(){
-	// 		time = (Math.floor(Math.random() * 1500) + 500) / 2;
-	// 		color = (color + 1) % 4
-	// 		this.style.color = colors[color];
-	// 		setTimeout(() => { this.style.color = colors[1]; console.log("reset") }, 42 * time);
-	// 	}
-	// }
 }
 
 var y = document.querySelectorAll('.silent');
