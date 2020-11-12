@@ -1,31 +1,41 @@
 @font-face {
 	font-family: "CustomFont";
-	src: url("./major.ttf");
+	src: url("../fonts/customfont.ttf");
 }
 
 body {
 	font-family: 'CustomFont', Arial, sans-serif;
 	font-weight:normal;
 	font-style:normal;
-	background-color: black;
-	color: white;
+	font-size: 100%;
+	background-color: #FFF;
+	color: #000;
 	height: 100%;
 	width: 100%;
+}
+
+.home {
 	font-size: 13vw; 
 }
 
 div {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	/* bring your own prefixes */
+	transform: translate(-50%, -50%);
 }
 
-.silent {
-	color: black;
+.poem {
+	text-align: center;
+	font-stretch: expanded;
+	font-size: 2em;
+	font-size: 2em;
+	line-height: 0.5em;
 }
 
-span:hover {
-	color: red;
+.titre {
+	text-align: center;
+	font-size: 2em;
+	line-height: 2em;
 }
