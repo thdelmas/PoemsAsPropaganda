@@ -222,7 +222,7 @@ function delay(delayInms) {
 var color = 0;
 async function fadein() {
 
-	var mode2 = Math.floor(Math.random() * 3)
+	var mode2 = Math.floor(Math.random() * 100) + 1
 	const x = Array.from(document.querySelectorAll('.letter:not(.silent)'))
 	var t = 0
 	var timer = 42
@@ -242,21 +242,21 @@ async function fadein() {
 		}
 		t++
 		inter = Math.floor((timer * 1000) / x.length)
-		if (mode2 == 0)
+		if (mode2 % 10 == 0)
 		{
-			await delay(Math.floor(Math.random() * timer * 1000))
-			elem.style.color = colors[(color++ + 1) % 3 + 1]
-			await delay(Math.floor(Math.random() * timer * 1000 / 2 + timer * 1000))
-		}
-		else if (mode2 == 1) {
 			await delay(Math.floor(inter * (x.length - t + 1)))
 			elem.style.color = colors[(color++ + 1) % 3 + 1]
 			await delay(Math.floor(inter * (x.length - t + 1) / 2 + timer * 1000))
 		}
-		else {
+		else if (mode2 % 2 == 0) {
 			await delay(Math.floor((t * inter)))
 			elem.style.color = colors[(color++ + 1) % 3 + 1]
 			await delay(Math.floor((t * inter) / 2 + timer * 1000))
+		}
+		else {
+			await delay(Math.floor(Math.random() * timer * 1000))
+			elem.style.color = colors[(color++ + 1) % 3 + 1]
+			await delay(Math.floor(Math.random() * timer * 1000 / 2 + timer * 1000))
 		}
 		elem.style.color = colors[(color++ + 1) % 6]
 		await delay((Math.floor(Math.random() * (t % timer) * 1000) / 2 + timer * 500))
