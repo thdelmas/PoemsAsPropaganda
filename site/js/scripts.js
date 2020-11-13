@@ -1,11 +1,20 @@
 var choices = [
-	"a.html",
+"1.html",
+"a_dev_null.html",
+"a.html",
 "ailleurs.html",
+"a_la_folie.html",
+"a_l_amiable.html",
+"a_la_seine.html",
 "a_m.html",
 "antimoine.html",
+"a_plus_tard.html",
 "au_revoir.html",
+"au_temps.html",
 "aventure.html",
+"betty.html",
 "b.html",
+"charmante.html",
 "cloud_1.html",
 "cloud_2.html",
 "dam.html",
@@ -14,10 +23,16 @@ var choices = [
 "distraction.html",
 "echo.html",
 "e_l_d_t.html",
+"epitres_2.html",
+"epitres_3.html",
+"epitres_4.html",
+"epitres_5.html",
+"epitres_6.html",
 "eve.html",
 "flou.html",
 "fous.html",
 "haine.html",
+"homme.html",
 "impassible.html",
 "la_chute.html",
 "la_course.html",
@@ -31,17 +46,22 @@ var choices = [
 "le_jour_d_un_attentat.html",
 "le_premier_jour_bis.html",
 "le_premier_jour.html",
+"le_vide_et_vous.html",
 "l_harmonie_de_la_demence.html",
 "l_ile.html",
 "l_oiseau.html",
+"lune_rousse.html",
 "lupus.html",
+"madame.html",
 "melodies.html",
+"morphee.html",
 "moustache.html",
 "naissance.html",
 "n_autre_monde.html",
 "nuage_3.html",
 "nuage_4.html",
 "nuits_d_ete.html",
+"o_nuit.html",
 "o_paradis.html",
 "osklau_saint_leger.html",
 "osl_10.html",
@@ -56,6 +76,7 @@ var choices = [
 "osl_9.html",
 "osl_premiere.html",
 "paris.html",
+"pauline.html",
 "petite_soeur.html",
 "petit_papier_1.html",
 "petit_papier_2.html",
@@ -132,6 +153,7 @@ var choices = [
 "scars_97.html",
 "scars_9.html",
 "temps.html",
+"tendre_et_chere.html",
 "traversee.html",
 "un.html",
 "un_jour.html",
@@ -200,9 +222,10 @@ function delay(delayInms) {
 var color = 0;
 async function fadein() {
 
-	const mode2 = Math.floor(Math.random() * 3)
+	var mode2 = Math.floor(Math.random() * 3)
 	const x = Array.from(document.querySelectorAll('.letter:not(.silent)'))
-	var t = 0.42
+	var t = 0
+	var timer = 42
 	const promise = x.map(async (elem) => {
 		elem.onmouseover = async function(){
 			color = (color + 1) % 6
@@ -214,29 +237,29 @@ async function fadein() {
 
 		let getUrl = window.location;
 		let baseUrl = getUrl.pathname.split('/');
-		if (baseUrl[baseUrl.length - 1] === "index.html") {
-			t += 0.21
-		} else {
-			t += 0.315
+		if (baseUrl[baseUrl.length - 1] === "index.html" || baseUrl[baseUrl.length - 1] === "") {
+			timer = 4.2 
 		}
+		t++
+		inter = Math.floor((timer * 1000) / x.length)
 		if (mode2 == 0)
 		{
-			await delay((Math.floor(Math.random() * 42000)))
+			await delay(Math.floor(Math.random() * timer * 1000))
 			elem.style.color = colors[(color++ + 1) % 3 + 1]
-			await delay((Math.floor(Math.random() * (t % 42) * 1000) / 2) + 42000)
+			await delay(Math.floor(Math.random() * timer * 1000 / 2 + timer * 1000))
 		}
 		else if (mode2 == 1) {
-			await delay(Math.floor((0.315 * x.length - t) * 1000))
+			await delay(Math.floor(inter * (x.length - t + 1)))
 			elem.style.color = colors[(color++ + 1) % 3 + 1]
-			await delay(Math.floor((((0.315 * x.length - t) * 1000)) / 2) + 42000)
+			await delay(Math.floor(inter * (x.length - t + 1) / 2 + timer * 1000))
 		}
 		else {
-			await delay(Math.floor(t * 1000))
+			await delay(Math.floor((t * inter)))
 			elem.style.color = colors[(color++ + 1) % 3 + 1]
-			await delay(Math.floor((t * 1000) / 2) + 42000)
+			await delay(Math.floor((t * inter) / 2 + timer * 1000))
 		}
 		elem.style.color = colors[(color++ + 1) % 6]
-		await delay((Math.floor(Math.random() * (t % 42) * 1000) / 2))
+		await delay((Math.floor(Math.random() * (t % timer) * 1000) / 2 + timer * 500))
 		elem.style.color = colors[1];
 		color += 7
 	})
