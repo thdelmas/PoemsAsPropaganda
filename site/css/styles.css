@@ -40,6 +40,6 @@ body {
 }
 
 .letter:not(".titre") {
-	margin-left: 0.05em;
-	margin-right: 0.05em;
+	margin-left: 0.1em;
+	margin-right: 0.01em;
 }
