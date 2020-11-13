@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+while [ "$1" ]
+do
 dest="site/poems/$(basename $1 | cut -d'.' -f1).html"
 
 cat > $dest <<EOF
@@ -18,15 +21,22 @@ cat > $dest <<EOF
 </head>
 
 <body>
-<p class="poem">
-
+<div id="poem">
 EOF
 
-cat $1 | sed 's/./<span class="letter">\0<\/span>/g' | sed "s/$/<\/br>/g" >> $dest
+cat $1 |
+	sed 's/./<span class="letter">\0<\/span>/g' |
+	sed "s/^.*$/<p class='line'>\0<\/p>/g" |
+	sed '1 s/^.*$/<span class="titre">\0<\/span>/'  |
+	sed "s/<p class='line'><\/p>/<p class='line'><span class='letter'>\&nbsp<\/span><\/p>/g">> $dest
 
 cat >> $dest <<EOF
-</p>  
+</div>  
 <script src="../js/scripts.js"></script>
 </body>
 </html>
 EOF
+
+shift
+
+done

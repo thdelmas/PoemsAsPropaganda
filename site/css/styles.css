@@ -7,18 +7,16 @@ body {
 	font-family: 'CustomFont', Arial, sans-serif;
 	font-weight:normal;
 	font-style:normal;
-	font-size: 100%;
 	background-color: #FFF;
 	color: #000;
-	height: 100%;
-	width: 100%;
+	min-height: 100%;
+	min-width: 100%;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
 }
 
-.home {
-	font-size: 13vw; 
-}
 
-div {
+#home {
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -26,16 +24,22 @@ div {
 	transform: translate(-50%, -50%);
 }
 
-.poem {
+#poem {
 	text-align: center;
-	font-stretch: expanded;
-	font-size: 2em;
-	font-size: 2em;
-	line-height: 0.5em;
+	width: 100%;
 }
 
 .titre {
 	text-align: center;
-	font-size: 2em;
-	line-height: 2em;
+	min-width: 100%;
+	font-size: 14vw;
+}
+
+.line {
+	margin: 0 0 0 0;
+}
+
+.letter:not(".titre") {
+	margin-left: 0.05em;
+	margin-right: 0.05em;
 }
