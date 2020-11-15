@@ -1,4 +1,182 @@
-var choices = [
+function delay(delayInms) {
+	return new Promise(resolve => {
+		setTimeout(() => {
+			resolve();
+		}, delayInms);
+	});
+}
+
+
+
+// My best friend the contingency
+
+function randInRange(min, max) {
+	rand = Math.floor(Math.random() * max)
+	while (rand < min || rand >= max) {
+		rand = Math.floor(Math.random() * max)
+	}
+	return rand
+}
+
+var first_loop = true
+
+async function showMe() {
+	const poemLines = Array.from(document.querySelectorAll('.line'))
+	const poemLetters = Array.from(document.querySelectorAll('.letter:not(.silent)'))
+	const poemLineInterval = poemDuration / poemLines.length
+	const poemLetterInterval = poemDuration / poemLetters.length
+	//	console.log("Poem Duration: ", poemDuration)
+	//	console.log("Poem Interval: ", poemLineInterval)
+
+	// For each line
+	// Dice line speed
+
+
+	let globalLetterPosition = 0
+	let linePosition = 0
+	let is_US = poemOrder.united
+	let random_l = randInRange(0,2)
+	const promise = poemLines.map(async (line) => {
+		linePosition++
+		let lineTimer = 0
+		let lineNumber = poemLines.length
+		// Print row
+		lineTimer += linePosition * poemLineInterval * (poemOrder.start % 2)
+		// Print reverse
+		lineTimer += (lineNumber - linePosition + 1) * poemLineInterval * (poemOrder.end % 2) 
+		// Print Random
+		lineTimer += Math.random() * poemDuration * (poemOrder.random % 2)
+		// XFactor
+		xFactor = ((poemOrder.start % 2) + (poemOrder.end % 2) + (poemOrder.random % 2)) % 3
+		if (xFactor > 0) {
+			lineTimer /= xFactor
+		}
+		lineTimer *= 1000
+		const inlineLettersAll = Array.from(line.querySelectorAll('.letter:not(.silent)'))
+		const inlineLetters = Array.from(line.querySelectorAll('.letter'))
+		const lineDuration = Math.abs(Math.random() * (poemDuration * (poemOrder.united % 2)) + (poemLineInterval * ((poemOrder.united + 1) % 2)) - Math.random())
+		//		//		console.log("Line speed (seconds): ", lineDuration)
+		const inlineLetterInterval = lineDuration / inlineLetters.length
+
+
+
+		// Dice line order
+		// This will be used for the appear/disappear thing
+		// 4 binary values combined drive to 255 different way to show a poem
+
+		if (poemOrder.united == 1 && poemOrder.random == 0)
+			isnot_US = 0
+		else
+			isnot_US = 1
+		let lineOrder = {
+			start: (randInRange(0,100) >= 42) * isnot_US + poemOrder.start * ((isnot_US + 1) % 2),
+			end: (randInRange(0,100) <= 42) * isnot_US + poemOrder.end * ((isnot_US + 1) % 2),
+			random: (randInRange(0,100) <= 30) * isnot_US + poemOrder.random * ((isnot_US + 1) % 2),
+			united: (randInRange(0, 100) <= 70) * isnot_US + ((isnot_US + 1) % 2) * poemOrder.united,
+		}
+		//		console.log("Line order", lineOrder)
+
+
+
+		// Dice line color speed
+
+		lineAnimationInterval = randInRange(0, 4200) / 100
+		//		//	console.log("Line animation interval: ", lineAnimationInterval)
+
+
+		if (inlineLetters.length > 1 && ! home) {
+			line.style.minWidth = "100vw"
+			line.style.Height = parseFloat((100 / poemLines.length)) + "vh"
+			line.style.fontSize = parseFloat((100 / inlineLetters.length)) + "vw"
+		}
+
+		// MAGICS
+
+		let inlineLetterPosition = 0
+		const promise2 = inlineLetters.map(async (letter) => {
+			globalLetterPosition++
+			inlineLetterPosition++
+			let letterPosition = globalLetterPosition * (lineOrder.united % 2) + inlineLetterPosition * ((lineOrder.united + 1) % 2)
+			let letterInterval = poemLetterInterval * (lineOrder.united % 2) + inlineLetterInterval * ((lineOrder.united + 1) % 2) 
+			let letterNumber = poemLetters.length * (lineOrder.united % 2) + inlineLetters.length * ((lineOrder.united + 1) % 2)
+			let timer = 0
+			// Print row
+			timer += letterPosition * letterInterval * (lineOrder.start % 2)
+			// Print reverse
+			timer += (letterNumber - letterPosition + 1) * letterInterval * (lineOrder.end % 2) 
+			// Print Random
+			timer += Math.random() * lineDuration * (lineOrder.random % 2)
+			//			console.log(lineDuration)
+			// XFactor
+			xFactor = ((lineOrder.start % 2) + (lineOrder.end % 2) + (lineOrder.random % 2)) % 3
+			if (xFactor > 0) {
+				timer /= xFactor
+			}
+			// Pass millisceonds
+			timer *= 1000
+			if (first_loop) {
+				letter.onmouseover = async function () {
+					let timer = 0
+					// Print row
+					timer += letterPosition * letterInterval * (lineOrder.start % 2)
+					// Print reverse
+					timer += (letterNumber - letterPosition + 1) * letterInterval * (lineOrder.end % 2) 
+					// Print Random
+					timer += Math.random() * lineDuration * (lineOrder.random % 2)
+					//					console.log(lineDuration)
+					// XFactor
+					xFactor = ((lineOrder.start % 2) + (lineOrder.end % 2) + (lineOrder.random % 2)) % 3
+					if (xFactor > 0) {
+						timer /= xFactor
+					}
+					// Pass millisceonds
+					timer *= 1000
+
+					if (inlineLetters.length > 1 && ! home) {
+						letter.style.maxWidth = parseFloat((100 / inlineLetters.length)) + "vw"
+						letter.style.width = parseFloat((100 / inlineLetters.length)) + "vw"
+					}
+					letter.style.color = colorSet[randInRange(0, 6)]
+					await delay(timer + lineTimer)
+					if (letter.classList.contains('silent')){
+						letter.style.color = colorSet[randInRange(0, 2)]
+					}
+					else {
+						letter.style.color = colorSet[randInRange(1, 3)]
+					}
+				}
+			}
+			await delay(timer + lineTimer)
+
+			if (inlineLetters.length > 1 && ! home) {
+				letter.style.maxWidth = parseFloat((100 / inlineLetters.length)) + "vw"
+				letter.style.width = parseFloat((100 / inlineLetters.length)) + "vw"
+			}
+			if (letter.classList.contains('silent')){
+				letter.style.color = colorSet[randInRange(0, 1)]
+			}
+			else {
+				letter.style.color = colorSet[randInRange(1, 3)]
+			}
+		})
+		await promise2
+	})
+	first_loop = false
+	await Promise.all(promise)
+}
+
+
+
+
+
+// Contingency is really important for me because it's what we face every day especially when we are trying to do something specific,
+// In my case trying to write poems
+
+// Why do you care don't you like poetry ? Do you like just this one ?
+
+// Long and dirty list of my personnal productions
+
+var poems = [
 "1.html",
 "a_dev_null.html",
 "a.html",
@@ -162,134 +340,117 @@ var choices = [
 "vivre_et_revivre.html"
 ]
 
-var  palettes= new Array();
-palettes[0] = new Array("rgb(0, 0, 0)", "rgb(255, 255, 255)", "rgb(150, 0, 0)");
-palettes[1] = new Array("rgb(0, 0, 0)", "rgb(120, 0, 0)", "rgb(150, 0, 0)");
-palettes[2] = new Array("rgb(254, 246, 222)", "rgb(1, 42, 84)", "rgb(241, 47, 40)");
-palettes[3] = new Array("rgb(212, 71, 67)", "rgb(19, 61, 85)", "rgb(219, 182, 151)");
-palettes[4] = new Array("rgb(56, 36, 31)", "rgb(152, 31, 16)", "rgb(220, 156, 118)");
-palettes[5] = new Array("rgb(33, 29, 26)", "rgb(140, 58, 49)", "rgb(150, 140, 116)");
-palettes[6] = new Array("rgb(233, 46, 39)", "rgb(23, 16, 20)", "rgb(248, 229, 165)");
-palettes[7] = new Array("rgb(25, 136, 36)", "rgb(236, 179, 64)", "rgb(190, 16, 51)");
-palettes[8] = new Array("rgb(177, 30, 53)", "rgb(195, 41, 60)", "rgb(232, 209, 196)");
-palettes[9] = new Array("rgb(194, 156, 112)", "rgb(69, 73, 78)", "rgb(198, 120, 27)");
+poem = poems[randInRange(0, poems.length)]
+////console.log("Poem: ", poem)
 
-var mode = Math.floor(Math.random() * 3);
-var colors = palettes[Math.floor(Math.random() * palettes.length)]
-let tmp1 = ""
-let tmp2 = ""
-let tmp3 = ""
-while (tmp1 === tmp2 || tmp1 === tmp3 || tmp3 === tmp2) {
-	palette = Math.floor(Math.random() * palettes.length)
-	tmp1 = palettes[palette][Math.floor(Math.random() * 3)]
-	tmp2 = palettes[palette][Math.floor(Math.random() * 3)]
-	tmp3 = palettes[palette][Math.floor(Math.random() * 3)]
-}
-
-colors[0] = tmp1
-colors[1] = tmp2
-colors[2] = tmp3
-colors[3] = colors[1]
-colors[4] = colors[0]
-colors[5] = colors[0]
-
-document.body.style.backgroundColor = colors[0];
-document.body.style.color = colors[1];
-document.body.style.opacity = 1;
-
-block = document.getElementById('home')
-if (block) {
-	block.onclick = function () {
-		window.location.href = "poems/" + choices[Math.floor(Math.random() * choices.length)]
+home = document.getElementById('home')
+if (home) {
+	home.onclick = function () {
+		window.location.href = "poems/" + poem
 	}
 }
 else 
 {
 	document.body.onclick = function () {
-		window.location.href = choices[Math.floor(Math.random() * choices.length)]
+		window.location.href = poem
 	}
 }
 
 
-function delay(delayInms) {
-	return new Promise(resolve => {
-		setTimeout(() => {
-			resolve();
-		}, delayInms);
-	});
+// First step of the random road
+// Which poem will be displayed ? 
+
+
+// Second step, don't choose a theme 
+// Because blood and dark are cool and all but we need to get out of here
+
+// List of sets of 3 colors inspired mostly by terror and propagand
+// Just because some words needs to hit your mind really hard
+
+var  colorThemes = new Array();
+colorThemes[0] = new Array("rgb(0, 0, 0)", "rgb(255, 255, 255)", "rgb(150, 0, 0)");
+colorThemes[1] = new Array("rgb(0, 0, 0)", "rgb(120, 0, 0)", "rgb(150, 0, 0)");
+colorThemes[2] = new Array("rgb(254, 246, 222)", "rgb(1, 42, 84)", "rgb(241, 47, 40)");
+colorThemes[3] = new Array("rgb(212, 71, 67)", "rgb(19, 61, 85)", "rgb(219, 182, 151)");
+colorThemes[4] = new Array("rgb(56, 36, 31)", "rgb(152, 31, 16)", "rgb(220, 156, 118)");
+colorThemes[5] = new Array("rgb(33, 29, 26)", "rgb(140, 58, 49)", "rgb(150, 140, 116)");
+colorThemes[6] = new Array("rgb(233, 46, 39)", "rgb(23, 16, 20)", "rgb(248, 229, 165)");
+colorThemes[7] = new Array("rgb(25, 136, 36)", "rgb(236, 179, 64)", "rgb(190, 16, 51)");
+colorThemes[8] = new Array("rgb(177, 30, 53)", "rgb(195, 41, 60)", "rgb(232, 209, 196)");
+colorThemes[9] = new Array("rgb(194, 156, 112)", "rgb(69, 73, 78)", "rgb(198, 120, 27)");
+
+colorSet = colorThemes[randInRange(0, colorThemes.length)]
+////console.log("Color Theme: ", colorSet)
+
+
+
+// Third step, get a colorful podium
+// Which color will be background, foreground, highlight ?
+// What a privilege
+
+let tmp1 = ""
+let tmp2 = ""
+let tmp3 = ""
+while (tmp1 === tmp2 || tmp1 === tmp3 || tmp3 === tmp2) {
+	tmp1 = colorSet[randInRange(0, 3)]
+	tmp2 = colorSet[randInRange(0, 3)]
+	tmp3 = colorSet[randInRange(0, 3)]
 }
 
-var color = 0;
-async function fadein() {
+colorSet[0] = tmp1
+colorSet[1] = tmp2
+colorSet[2] = tmp3
+colorSet[3] = colorSet[1]
+colorSet[4] = colorSet[0]
+colorSet[5] = colorSet[0]
+document.body.style.backgroundColor = colorSet[0];
+document.body.style.color = colorSet[1];
+////console.log("Color Set: ", colorSet)
 
-	var mode2 = Math.floor(Math.random() * 100) + 1
-	const x = Array.from(document.querySelectorAll('.letter:not(.silent)'))
-	var t = 0
-	var timer = 42
-	const promise = x.map(async (elem) => {
-		elem.onmouseover = async function(){
-			color = (color + 1) % 6
-			elem.style.color = colors[color];
-			await delay((Math.floor(Math.random() * 42 * 1000) / 2))
-			elem.style.color = colors[1];
-		}
-		elem.style.color = colors[0]
 
-		let getUrl = window.location;
-		let baseUrl = getUrl.pathname.split('/');
-		if (baseUrl[baseUrl.length - 1] === "index.html" || baseUrl[baseUrl.length - 1] === "") {
-			timer = 4.2 
-		}
-		t++
-		inter = Math.floor((timer * 1000) / x.length)
-		if (mode2 % 10 == 0)
-		{
-			await delay(Math.floor(inter * (x.length - t + 1)))
-			elem.style.color = colors[(color++ + 1) % 3 + 1]
-			await delay(Math.floor(inter * (x.length - t + 1) / 2 + timer * 1000))
-		}
-		else if (mode2 % 2 == 0) {
-			await delay(Math.floor((t * inter)))
-			elem.style.color = colors[(color++ + 1) % 3 + 1]
-			await delay(Math.floor((t * inter) / 2 + timer * 1000))
-		}
-		else {
-			await delay(Math.floor(Math.random() * timer * 1000))
-			elem.style.color = colors[(color++ + 1) % 3 + 1]
-			await delay(Math.floor(Math.random() * timer * 1000 / 2 + timer * 1000))
-		}
-		elem.style.color = colors[(color++ + 1) % 6]
-		await delay((Math.floor(Math.random() * (t % timer) * 1000) / 2 + timer * 500))
-		elem.style.color = colors[1];
-		color += 7
-	})
-	await Promise.all(promise)
+
+// Dice poem speed in seconds
+
+if (home) {
+	poemDuration = randInRange(42, 420 / 2) / 100
+} else {
+	poemDuration = randInRange(42, 4200 / 4) / 100
 }
+////console.log("Poem speed (seconds): ", poemDuration)
 
-var y = document.querySelectorAll('.silent');
-var j;
 
-for (j = 0; j < y.length; j++) {
-	y[j].style.color = colors[0];
-	y[j].onmouseover = function(){
-		if (this.style.color !== colors[0]) {
-			this.style.color = colors[0];
-		}
-		else {
-			this.style.color = colors[2];
-		}
-	}
+
+// Dice poem order
+// This will be used for the appear/disappear thing
+// 4 binary values combined drive to 255 different way to show a poem
+
+let poemOrder = {
+	start: (randInRange(0,100) >= 42),
+	end: (randInRange(0,100) <= 42),
+	random: (randInRange(0,100) <= 30),
+	united: (randInRange(0,100) <= 70)
 }
+////console.log("Poem order: ", poemOrder)
 
-const lines = Array.from(document.querySelectorAll('.line'))
-lines.map((line) => {
-	const chars = Array.from(line.querySelectorAll('.letter'))
-	if (chars.length > 1 && ! block) {
-		chars.map((c) => {
-			c.style.fontSize = parseFloat((100 / (chars.length ))) + "vw"
-		})
-		line.style.fontSize = parseFloat((100 / (chars.length ))) + "vw"
-	}
+
+
+// Dice poem color speed
+
+poemAnimationInterval = randInRange(0, 4200) / 100
+////console.log("Poem Shadow speed: ", poemAnimationInterval)
+
+Array.from(document.querySelectorAll('.letter')).map((letter) => {
+	letter.style.color = colorSet[0]
 })
 
-fadein();
+async function looper() {
+	while (true) {
+		showMe()
+		await delay(randInRange(21000, 42000))
+	}
+}
+//setInterval(showMe, poemAnimationInterval * 1000)
+// Welcome every one hope you don't get to much frustration, however it's inavoidable if you can't control it
+////console.log(window.location.href)
+//
+looper()

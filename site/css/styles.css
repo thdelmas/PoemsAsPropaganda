@@ -42,4 +42,5 @@ body {
 .letter:not(".titre") {
 	margin-left: 0.1em;
 	margin-right: 0.01em;
+	font-size: xx-large;
 }
