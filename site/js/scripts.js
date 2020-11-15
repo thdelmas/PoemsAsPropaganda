@@ -45,7 +45,7 @@ async function showMe() {
 		// Print reverse
 		lineTimer += (lineNumber - linePosition + 1) * poemLineInterval * (poemOrder.end % 2) 
 		// Print Random
-		lineTimer += Math.random() * poemDuration * (poemOrder.random % 2)
+		lineTimer += Math.random() * poemDuration * (poemOrder.random % 2) / linePosition
 		// XFactor
 		xFactor = ((poemOrder.start % 2) + (poemOrder.end % 2) + (poemOrder.random % 2)) % 3
 		if (xFactor > 0) {
@@ -80,13 +80,13 @@ async function showMe() {
 
 		// Dice line color speed
 
-		lineAnimationInterval = randInRange(0, 4200) / 100
+		lineAnimationInterval = randInRange(0, lineDuration)
 		//		//	console.log("Line animation interval: ", lineAnimationInterval)
 
 
 		if (inlineLetters.length > 1 && ! home) {
 			line.style.minWidth = "100vw"
-			line.style.Height = parseFloat((100 / poemLines.length)) + "vh"
+			line.style.width = "100vw"
 			line.style.fontSize = parseFloat((100 / inlineLetters.length)) + "vw"
 		}
 
@@ -105,7 +105,7 @@ async function showMe() {
 			// Print reverse
 			timer += (letterNumber - letterPosition + 1) * letterInterval * (lineOrder.end % 2) 
 			// Print Random
-			timer += Math.random() * lineDuration * (lineOrder.random % 2)
+			timer += Math.random() * lineDuration * (lineOrder.random % 2) / letterPosition
 			//			console.log(lineDuration)
 			// XFactor
 			xFactor = ((lineOrder.start % 2) + (lineOrder.end % 2) + (lineOrder.random % 2)) % 3
@@ -122,7 +122,7 @@ async function showMe() {
 					// Print reverse
 					timer += (letterNumber - letterPosition + 1) * letterInterval * (lineOrder.end % 2) 
 					// Print Random
-					timer += Math.random() * lineDuration * (lineOrder.random % 2)
+					timer += Math.random() * lineDuration * (lineOrder.random % 2) / letterNumber
 					//					console.log(lineDuration)
 					// XFactor
 					xFactor = ((lineOrder.start % 2) + (lineOrder.end % 2) + (lineOrder.random % 2)) % 3
@@ -160,6 +160,7 @@ async function showMe() {
 			}
 		})
 		await promise2
+		line.style.opacity = 1
 	})
 	first_loop = false
 	await Promise.all(promise)
@@ -368,16 +369,21 @@ else
 // Just because some words needs to hit your mind really hard
 
 var  colorThemes = new Array();
-colorThemes[0] = new Array("rgb(0, 0, 0)", "rgb(255, 255, 255)", "rgb(150, 0, 0)");
-colorThemes[1] = new Array("rgb(0, 0, 0)", "rgb(120, 0, 0)", "rgb(150, 0, 0)");
-colorThemes[2] = new Array("rgb(254, 246, 222)", "rgb(1, 42, 84)", "rgb(241, 47, 40)");
-colorThemes[3] = new Array("rgb(212, 71, 67)", "rgb(19, 61, 85)", "rgb(219, 182, 151)");
-colorThemes[4] = new Array("rgb(56, 36, 31)", "rgb(152, 31, 16)", "rgb(220, 156, 118)");
-colorThemes[5] = new Array("rgb(33, 29, 26)", "rgb(140, 58, 49)", "rgb(150, 140, 116)");
-colorThemes[6] = new Array("rgb(233, 46, 39)", "rgb(23, 16, 20)", "rgb(248, 229, 165)");
-colorThemes[7] = new Array("rgb(25, 136, 36)", "rgb(236, 179, 64)", "rgb(190, 16, 51)");
-colorThemes[8] = new Array("rgb(177, 30, 53)", "rgb(195, 41, 60)", "rgb(232, 209, 196)");
-colorThemes[9] = new Array("rgb(194, 156, 112)", "rgb(69, 73, 78)", "rgb(198, 120, 27)");
+
+
+
+colorThemes[0] = new Array("rgb(20, 20, 20)", "rgb(161, 51, 36)", "rgb(113, 30, 29)");
+colorThemes[1] = new Array("rgb(27, 137, 38)", "rgb(123, 2, 46)", "rgb(233, 180, 68)");
+colorThemes[2] = new Array("rgb(69, 169, 122)", "rgb(206, 233, 219)", "rgb(1, 38, 12)");
+colorThemes[3] = new Array("rgb(110, 145, 203)", "rgb(21, 52, 102)", "rgb(0, 0, 0)");
+colorThemes[4] = new Array("rgb(36, 25, 42)", "rgb(122, 139, 143)", "rgb(45, 109, 59)");
+colorThemes[5] = new Array("rgb(201, 177, 129)", "rgb(129, 135, 125)", "rgb(41, 26, 32)");
+colorThemes[6] = new Array("rgb(43, 40, 47)", "rgb(169, 57, 31)", "rgb(224, 201, 160)");
+colorThemes[7] = new Array("rgb(208, 180, 153)", "rgb(55, 59, 70)", "rgb(143, 53, 52)");
+colorThemes[8] = new Array("rgb(215, 179, 29)", "rgb(84, 126, 135)", "rgb(47, 65, 100)");
+colorThemes[9] = new Array("rgb(228, 204, 178)", "rgb(182, 48, 34)", "rgb(33, 55, 98)");
+colorThemes[10] = new Array("rgb(248, 157, 24)", "rgb(255, 255, 255)", "rgb(0, 0, 0)");
+colorThemes[11] = new Array("rgb(185, 167, 117)", "rgb(51, 37, 34)", "rgb(145, 39, 32)");
 
 colorSet = colorThemes[randInRange(0, colorThemes.length)]
 ////console.log("Color Theme: ", colorSet)
@@ -414,7 +420,7 @@ document.body.style.color = colorSet[1];
 if (home) {
 	poemDuration = randInRange(42, 420 / 2) / 100
 } else {
-	poemDuration = randInRange(42, 4200 / 4) / 100
+	poemDuration = randInRange(42, 4200) / 100
 }
 ////console.log("Poem speed (seconds): ", poemDuration)
 
@@ -427,8 +433,8 @@ if (home) {
 let poemOrder = {
 	start: (randInRange(0,100) >= 42),
 	end: (randInRange(0,100) <= 42),
-	random: (randInRange(0,100) <= 30),
-	united: (randInRange(0,100) <= 70)
+	random: (randInRange(0,100) <= 70),
+	united: (randInRange(0,100) <= 30)
 }
 ////console.log("Poem order: ", poemOrder)
 
@@ -446,7 +452,8 @@ Array.from(document.querySelectorAll('.letter')).map((letter) => {
 async function looper() {
 	while (true) {
 		showMe()
-		await delay(randInRange(21000, 42000))
+		await delay(randInRange(poemDuration * 1000, poemDuration * 2 * 1000))
+		clearInterval()
 	}
 }
 //setInterval(showMe, poemAnimationInterval * 1000)

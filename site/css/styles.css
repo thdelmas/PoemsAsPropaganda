@@ -27,6 +27,11 @@ body {
 #poem {
 	text-align: center;
 	width: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
 }
 
 .titre {
@@ -36,11 +41,15 @@ body {
 }
 
 .line {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
 	margin: 0 0 0 0;
+	opacity: 0;
 }
 
 .letter:not(".titre") {
-	margin-left: 0.1em;
-	margin-right: 0.01em;
-	font-size: xx-large;
+	paddingleft: 0.1em;
+	padding-right: 0.1em;
+	line-heigth: 1em;
 }
