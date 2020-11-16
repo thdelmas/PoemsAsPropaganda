@@ -1,3 +1,25 @@
+function getMedium() {
+	let medium = 0;
+	let i = 0;
+	Array.from(document.querySelectorAll('.line')).map((line) => {
+		medium += Array.from(line.querySelectorAll('.letter')).length
+		i++
+	})
+	medium /= i
+	return medium
+}
+
+function getMaxLen() {
+	let max = 0;
+	Array.from(document.querySelectorAll('.line')).map((line) => {
+		let tmp = Array.from(line.querySelectorAll('.letter')).length
+		if (tmp > max)
+			max = tmp
+	})
+	return max
+}
+
+
 function delay(delayInms) {
 	return new Promise(resolve => {
 		setTimeout(() => {
@@ -23,6 +45,7 @@ var first_loop = true
 async function showMe() {
 	const poemLines = Array.from(document.querySelectorAll('.line'))
 	const poemLetters = Array.from(document.querySelectorAll('.letter:not(.silent)'))
+	const poemLettersFull = Array.from(document.querySelectorAll('.letter'))
 	const poemLineInterval = poemDuration / poemLines.length
 	const poemLetterInterval = poemDuration / poemLetters.length
 	//	console.log("Poem Duration: ", poemDuration)
@@ -87,7 +110,6 @@ async function showMe() {
 		if (inlineLetters.length > 1 && ! home) {
 			line.style.minWidth = "100vw"
 			line.style.width = "100vw"
-			line.style.fontSize = parseFloat((100 / inlineLetters.length)) + "vw"
 		}
 
 		// MAGICS
@@ -115,7 +137,7 @@ async function showMe() {
 			// Pass millisceonds
 			timer *= 1000
 			if (first_loop) {
-				letter.onmouseover = async function () {
+			/*	letter.onmouseover = async function () {
 					let timer = 0
 					// Print row
 					timer += letterPosition * letterInterval * (lineOrder.start % 2)
@@ -134,7 +156,7 @@ async function showMe() {
 
 					if (inlineLetters.length > 1 && ! home) {
 						letter.style.maxWidth = parseFloat((100 / inlineLetters.length)) + "vw"
-						letter.style.width = parseFloat((100 / inlineLetters.length)) + "vw"
+						letter.style.fontSize = parseFloat((100 / inlineLetters.length)) + "vw"
 					}
 					letter.style.color = colorSet[randInRange(0, 6)]
 					await delay(timer + lineTimer)
@@ -144,14 +166,14 @@ async function showMe() {
 					else {
 						letter.style.color = colorSet[randInRange(1, 3)]
 					}
-				}
+				}*/
 			}
 			await delay(timer + lineTimer)
 
 			if (inlineLetters.length > 1 && ! home) {
-				letter.style.maxWidth = parseFloat((100 / inlineLetters.length)) + "vw"
-				letter.style.width = parseFloat((100 / inlineLetters.length)) + "vw"
-			}
+					letterSize = (poemLines.length / inlineLetters.length) * (100 / (window.innerHeight / window.innerWidth))
+					letter.style.fontSize = letterSize + "vw"
+				}
 			if (letter.classList.contains('silent')){
 				letter.style.color = colorSet[randInRange(0, 1)]
 			}
