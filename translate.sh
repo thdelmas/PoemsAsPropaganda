@@ -16,27 +16,25 @@ cat > $dest <<EOF
   <meta name="description" content="Osklau">
   <meta name="author" content="Osklau">
 
-  <link rel="stylesheet" href="../css/styles.css?v=1.0">
+  <link rel="stylesheet" href="../css/styles_test.css?v=1.0">
 
 </head>
 
 <body>
-<div id="poem">
+<table ><tbody id="poem">
 EOF
 
 cat $1 |
-	sed 's/./<span class="letter">\0<\/span>/g' |
-	sed "s/^.*$/<p class='line'>\0<\/p>/g" |
-	sed '1 s/^.*$/<span class="titre">\0<\/span>/'  |
-	sed "s/<p class='line'><\/p>/<p class='line'><span class='letter'>\&nbsp<\/span><\/p>/g">> $dest
+	sed 's/./<td class="letter">\0<\/td>/g' |
+	sed "s/^.*$/<tr class='line'>\0<\/tr>/g" |
+	sed "s/<tr class='line'><\/tr>/<tr class='line'><td class='letter'>\&nbsp<\/td><\/tr>/g">> $dest
 
 cat >> $dest <<EOF
-</div>  
+</tbody></table>  
 <script src="../js/scripts.js"></script>
 </body>
 </html>
 EOF
-
 shift
 
 done

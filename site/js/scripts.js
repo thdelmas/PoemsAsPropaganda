@@ -59,6 +59,10 @@ async function showMe() {
 	let linePosition = 0
 	let is_US = poemOrder.united
 	let random_l = randInRange(0,2)
+	if (poemOrder.readable)
+		document.getElementById("poem").style.overflow = 'scroll';
+	else
+		document.getElementById("poem").style.overflow = 'hidden';
 	const promise = poemLines.map(async (line) => {
 		linePosition++
 		let lineTimer = 0
@@ -137,7 +141,7 @@ async function showMe() {
 			// Pass millisceonds
 			timer *= 1000
 			if (first_loop) {
-			/*	letter.onmouseover = async function () {
+				letter.onmouseover = async function () {
 					let timer = 0
 					// Print row
 					timer += letterPosition * letterInterval * (lineOrder.start % 2)
@@ -155,8 +159,19 @@ async function showMe() {
 					timer *= 1000
 
 					if (inlineLetters.length > 1 && ! home) {
-						letter.style.maxWidth = parseFloat((100 / inlineLetters.length)) + "vw"
-						letter.style.fontSize = parseFloat((100 / inlineLetters.length)) + "vw"
+						if (poemOrder.readable)
+						{
+							letterSize = 100 /  ((getMedium() + inlineLetters.length) / 2)
+							letter.style.maxWidth = letterSize + "vw"
+							letter.style.fontSize = letterSize + "vw"
+						}
+					else
+					{
+						letterSize = 100 / (poemLettersFull.length / (getMaxLen() - inlineLetters.length + 1))
+						letter.style.maxWidth = letterSize + "vmin"
+						letter.style.fontSize = letterSize + "vmin"
+					}
+						letter.style.opacity = 1
 					}
 					letter.style.color = colorSet[randInRange(0, 6)]
 					await delay(timer + lineTimer)
@@ -166,14 +181,25 @@ async function showMe() {
 					else {
 						letter.style.color = colorSet[randInRange(1, 3)]
 					}
-				}*/
+				}
 			}
 			await delay(timer + lineTimer)
 
 			if (inlineLetters.length > 1 && ! home) {
-					letterSize = (poemLines.length / inlineLetters.length) * (100 / (window.innerHeight / window.innerWidth))
-					letter.style.fontSize = letterSize + "vw"
-				}
+				if (poemOrder.readable)
+						{
+							letterSize = 100 /  ((getMedium() + inlineLetters.length) / 2)
+							letter.style.maxWidth = letterSize + "vw"
+							letter.style.fontSize = letterSize + "vw"
+						}
+					else
+					{
+						letterSize = 100 / (poemLettersFull.length / (getMaxLen() - inlineLetters.length + 1))
+						letter.style.maxWidth = letterSize + "vmin"
+						letter.style.fontSize = letterSize + "vmin"
+					}
+						letter.style.opacity = 1
+					}
 			if (letter.classList.contains('silent')){
 				letter.style.color = colorSet[randInRange(0, 1)]
 			}
@@ -440,9 +466,9 @@ document.body.style.color = colorSet[1];
 // Dice poem speed in seconds
 
 if (home) {
-	poemDuration = randInRange(42, 420 / 2) / 100
+	poemDuration = randInRange(0, 420) / 200
 } else {
-	poemDuration = randInRange(42, 4200) / 100
+	poemDuration = randInRange(0, 4200) / 200
 }
 ////console.log("Poem speed (seconds): ", poemDuration)
 
@@ -456,7 +482,8 @@ let poemOrder = {
 	start: (randInRange(0,100) >= 42),
 	end: (randInRange(0,100) <= 42),
 	random: (randInRange(0,100) <= 70),
-	united: (randInRange(0,100) <= 30)
+	united: (randInRange(0,100) <= 30),
+	readable: (randInRange(0,100) <= 50)
 }
 ////console.log("Poem order: ", poemOrder)
 
@@ -474,7 +501,7 @@ Array.from(document.querySelectorAll('.letter')).map((letter) => {
 async function looper() {
 	while (true) {
 		showMe()
-		await delay(randInRange(poemDuration * 1000, poemDuration * 2 * 1000))
+		await delay(randInRange(poemDuration * 4200, poemDuration * 2 * 4200))
 		clearInterval()
 	}
 }
