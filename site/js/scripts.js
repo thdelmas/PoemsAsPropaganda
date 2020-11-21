@@ -204,6 +204,10 @@ async function showMe() {
 			else {
 				letter.style.color = colorSet[randInRange(1, 3)]
 			}
+			await delay(randInRange(poemDuration * 420, poemDuration * 42000))
+			letter.style.color = colorSet[randInRange(0, 6)]
+			await delay(randInRange(poemDuration * 4200, poemDuration * 42000))
+			letter.style.color = colorSet[randInRange(1, 3)]
 		})
 		await promise2
 		line.style.opacity = 1
@@ -471,9 +475,9 @@ document.body.style.color = colorSet[1];
 // Dice poem speed in seconds
 
 if (home) {
-	poemDuration = randInRange(0, 420) / 200
+	poemDuration = randInRange(1, 420) / 200
 } else {
-	poemDuration = randInRange(0, 4200) / 200
+	poemDuration = randInRange(1, 4200) / 200
 }
 ////console.log("Poem speed (seconds): ", poemDuration)
 
@@ -540,4 +544,4 @@ function scrollSmooth() {
 
 looper()
 clearInterval()
-setTimeout(() => { document.body.click()}, randInRange(poemDuration * 42000, poemDuration * 42000 * 2))
+setTimeout(() => { document.body.click()}, randInRange(42000, (poemDuration + 1) * 42000))
