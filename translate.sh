@@ -30,6 +30,9 @@ cat > $dest <<EOF
 EOF
 
 cat $1 |
+  sed 's/^ *//g' |
+  sed 's/ *$//g' |
+  sed 's/  */ /g' |
 	sed 's/./<td class="letter">\0<\/td>/g' |
 	sed "s/^.*$/<tr class='line'>\0<\/tr>/g" |
 	sed "s/<tr class='line'><\/tr>/<tr class='line'><td class='letter'>\&nbsp<\/td><\/tr>/g">> $dest
