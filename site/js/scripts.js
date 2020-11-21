@@ -47,8 +47,8 @@ async function showMe() {
 
 	const poemLetters = Array.from(document.querySelectorAll('.letter:not(.silent)'))
 	const poemLettersFull = Array.from(document.querySelectorAll('.letter'))
-	const poemLineInterval = poemDuration / poemLines.length
-	const poemLetterInterval = poemDuration / poemLetters.length
+	const poemLineInterval = (poemDuration + 1) / poemLines.length
+	const poemLetterInterval = (poemDuration + 1) / poemLetters.length
 	//	console.log("Poem Duration: ", poemDuration)
 	//	console.log("Poem Interval: ", poemLineInterval)
 
@@ -70,7 +70,7 @@ async function showMe() {
 		// Print reverse
 		lineTimer += (lineNumber - linePosition + 1) * poemLineInterval * (poemOrder.end % 2) 
 		// Print Random
-		lineTimer += Math.random() * poemDuration * (poemOrder.random % 2) / linePosition
+		lineTimer += Math.random() * (poemDuration + 1) * (poemOrder.random % 2) / linePosition
 		// XFactor
 		xFactor = ((poemOrder.start % 2) + (poemOrder.end % 2) + (poemOrder.random % 2)) % 3
 		if (xFactor > 0) {
@@ -79,7 +79,7 @@ async function showMe() {
 		lineTimer *= 1000
 		const inlineLettersAll = Array.from(line.querySelectorAll('.letter:not(.silent)'))
 		const inlineLetters = Array.from(line.querySelectorAll('.letter'))
-		const lineDuration = Math.abs(Math.random() * (poemDuration * (poemOrder.united % 2)) + (poemLineInterval * ((poemOrder.united + 1) % 2)) - Math.random())
+		const lineDuration = Math.abs(Math.random() * ((poemDuration + 1) * (poemOrder.united % 2)) + (poemLineInterval * ((poemOrder.united + 1) % 2)) - Math.random())
 		//		//		console.log("Line speed (seconds): ", lineDuration)
 		const inlineLetterInterval = lineDuration / inlineLetters.length
 
@@ -180,6 +180,10 @@ async function showMe() {
 					else {
 						letter.style.color = colorSet[randInRange(1, 3)]
 					}
+					await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
+					letter.style.color = colorSet[randInRange(0, 2)]
+					await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
+					letter.style.color = colorSet[randInRange(1, 3)]
 				}
 			}
 			await delay(timer + lineTimer)
@@ -204,9 +208,9 @@ async function showMe() {
 			else {
 				letter.style.color = colorSet[randInRange(1, 3)]
 			}
-			await delay(randInRange(poemDuration * 420, poemDuration * 42000))
+			await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
 			letter.style.color = colorSet[randInRange(0, 6)]
-			await delay(randInRange(poemDuration * 4200, poemDuration * 42000))
+			await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
 			letter.style.color = colorSet[randInRange(1, 3)]
 		})
 		await promise2
@@ -528,7 +532,7 @@ async function looper() {
 	/*while (ij < poemLines.length * 4.2)
 	{*/
 	await showMe()
-		await delay(randInRange(poemDuration * 4200 , poemDuration * 2 * 4200))
+		await delay(randInRange((poemDuration + 1) * 4200 , (poemDuration + 1) * 2 * 4200))
 	ij++
 	/*}*/
 }
