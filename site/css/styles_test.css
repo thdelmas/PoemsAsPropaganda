@@ -27,6 +27,9 @@ table, tbody {
 	width: 100%;
 	padding: 0 0 0 0;
 	margin: 0 0 0 0;
+	overflow-x: hidden;
+
+	scroll-behavior: smooth;
 }
 
 tr {

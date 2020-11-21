@@ -3,7 +3,12 @@
 
 while [ "$1" ]
 do
-dest="site/poems/$(basename $1 | cut -d'.' -f1).html"
+dest="site/poems/$(echo $1 | sed 's/^poems\///g'| cut -d'.' -f1).html"
+parent_path=""
+for i in $(dirname $1 | tr '/' ' ')
+do
+  parent_path="../$parent_path"
+done
 
 cat > $dest <<EOF
 <!doctype html>
@@ -16,7 +21,7 @@ cat > $dest <<EOF
   <meta name="description" content="Osklau">
   <meta name="author" content="Osklau">
 
-  <link rel="stylesheet" href="../css/styles_test.css?v=1.0">
+  <link rel="stylesheet" href="${parent_path}css/styles_test.css?v=1.0">
 
 </head>
 
@@ -31,7 +36,7 @@ cat $1 |
 
 cat >> $dest <<EOF
 </tbody></table>  
-<script src="../js/scripts.js"></script>
+<script src="${parent_path}js/scripts.js"></script>
 </body>
 </html>
 EOF

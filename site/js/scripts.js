@@ -41,9 +41,10 @@ function randInRange(min, max) {
 }
 
 var first_loop = true
+var poemLines = Array.from(document.querySelectorAll('.line'))
 
 async function showMe() {
-	const poemLines = Array.from(document.querySelectorAll('.line'))
+
 	const poemLetters = Array.from(document.querySelectorAll('.letter:not(.silent)'))
 	const poemLettersFull = Array.from(document.querySelectorAll('.letter'))
 	const poemLineInterval = poemDuration / poemLines.length
@@ -59,10 +60,7 @@ async function showMe() {
 	let linePosition = 0
 	let is_US = poemOrder.united
 	let random_l = randInRange(0,2)
-	if (poemOrder.readable)
-		document.getElementById("poem").style.overflow = 'scroll';
-	else
-		document.getElementById("poem").style.overflow = 'hidden';
+	poemHTML = document.getElementById('poem')
 	const promise = poemLines.map(async (line) => {
 		linePosition++
 		let lineTimer = 0
@@ -111,12 +109,15 @@ async function showMe() {
 		//		//	console.log("Line animation interval: ", lineAnimationInterval)
 
 
-		if (inlineLetters.length > 1 && ! home) {
-			line.style.minWidth = "100vw"
-			line.style.width = "100vw"
-		}
-
-		// MAGICS
+		line.style.minWidth = "100vw"
+		line.style.width = "100vw"
+		if (inlineLettersAll.length <= 1)
+		{
+			line.style.maxHeight = 100 / (poemLines.length * 1.25) + "vh"
+		} else {
+			line.style.maxHeight = (inlineLetters.length / poemLettersFull.length) * 100
+	}
+			// MAGICS
 
 		let inlineLetterPosition = 0
 		const promise2 = inlineLetters.map(async (letter) => {
@@ -157,21 +158,19 @@ async function showMe() {
 					}
 					// Pass millisceonds
 					timer *= 1000
-
-					if (inlineLetters.length > 1 && ! home) {
-						if (poemOrder.readable)
-						{
-							letterSize = 100 /  ((getMedium() + inlineLetters.length) / 2)
-							letter.style.maxWidth = letterSize + "vw"
-							letter.style.fontSize = letterSize + "vw"
-						}
-					else
-					{
-						letterSize = 100 / (poemLettersFull.length / (getMaxLen() - inlineLetters.length + 1))
-						letter.style.maxWidth = letterSize + "vmin"
-						letter.style.fontSize = letterSize + "vmin"
-					}
-						letter.style.opacity = 1
+					letter.style.opacity = 1
+					letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + "vmin"
+					if (inlineLettersAll.length <= 1) {
+						letter.style.fontSize = 100 / (poemLines.length * 1.25) + "vmin"
+						letter.style.width = 100 / (poemLines.length * 1.25) + "vmin"
+						letter.style.minWidth = 100 / (poemLines.length * 1.25) + "vmin"
+						letter.style.maxHeight = 100 / (poemLines.length * 1.25) + "vmin"
+					} else {
+						letter.style.fontSize = 100 / inlineLetters.length + "vmin"
+						letter.style.width = 100 / inlineLetters.length + "vmin"
+						letter.style.minWidth = 100 / inlineLetters.length + "vmin"
+						letter.style.maxWidth = 100 / inlineLetters.length + "vmin"
+						letter.style.maxHeight = 100 / inlineLetters.length + "vmin"
 					}
 					letter.style.color = colorSet[randInRange(0, 6)]
 					await delay(timer + lineTimer)
@@ -184,22 +183,21 @@ async function showMe() {
 				}
 			}
 			await delay(timer + lineTimer)
-
-			if (inlineLetters.length > 1 && ! home) {
-				if (poemOrder.readable)
-						{
-							letterSize = 100 /  ((getMedium() + inlineLetters.length) / 2)
-							letter.style.maxWidth = letterSize + "vw"
-							letter.style.fontSize = letterSize + "vw"
-						}
-					else
-					{
-						letterSize = 100 / (poemLettersFull.length / (getMaxLen() - inlineLetters.length + 1))
-						letter.style.maxWidth = letterSize + "vmin"
-						letter.style.fontSize = letterSize + "vmin"
-					}
-						letter.style.opacity = 1
-					}
+			letter.style.opacity = 1
+			letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + "vmin"
+			if (inlineLettersAll.length <= 1) {
+				letter.style.fontSize = 100 / (poemLines.length * 1.25) + "vmin"
+				letter.style.width = 100 / (poemLines.length * 1.25) + "vmin"
+				letter.style.minWidth = 100 / (poemLines.length * 1.25) + "vmin"
+				letter.style.maxHeight = 100 / (poemLines.length * 1.25) + "vmin"
+			
+			} else {
+				letter.style.fontSize = 100 / inlineLetters.length + "vmin"
+				letter.style.width = 100 / inlineLetters.length + "vmin"
+				letter.style.minWidth = 100 / inlineLetters.length + "vmin"
+				letter.style.maxWidth = 100 / inlineLetters.length + "vmin"
+				letter.style.maxHeight = 100 / inlineLetters.length + "vmin"
+			}
 			if (letter.classList.contains('silent')){
 				letter.style.color = colorSet[randInRange(0, 1)]
 			}
@@ -226,183 +224,190 @@ async function showMe() {
 // Long and dirty list of my personnal productions
 
 var poems = [
-"1.html",
-"a_dev_null.html",
-"a.html",
-"ailleurs.html",
-"a_la_folie.html",
-"a_l_amiable.html",
-"a_la_seine.html",
-"a_m.html",
-"antimoine.html",
-"a_plus_tard.html",
-"au_revoir.html",
-"au_temps.html",
-"aventure.html",
-"betty.html",
-"b.html",
-"charmante.html",
-"cloud_1.html",
-"cloud_2.html",
-"dam.html",
-"de_l_atome_a_la_molecule.html",
-"demon.html",
-"distraction.html",
-"echo.html",
-"e_l_d_t.html",
-"epitres_2.html",
-"epitres_3.html",
-"epitres_4.html",
-"epitres_5.html",
-"epitres_6.html",
-"eve.html",
-"flou.html",
-"fous.html",
-"haine.html",
-"homme.html",
-"impassible.html",
-"la_chute.html",
-"la_course.html",
-"la_femme.html",
-"la_fleur.html",
-"la_rame.html",
-"la_recette.html",
-"l_ascenceur.html",
-"l_aube.html",
-"l_eau.html",
-"le_jour_d_un_attentat.html",
-"le_premier_jour_bis.html",
-"le_premier_jour.html",
-"le_vide_et_vous.html",
-"l_harmonie_de_la_demence.html",
-"l_ile.html",
-"l_oiseau.html",
-"lune_rousse.html",
-"lupus.html",
-"madame.html",
-"melodies.html",
-"morphee.html",
-"moustache.html",
-"naissance.html",
-"n_autre_monde.html",
-"nuage_3.html",
-"nuage_4.html",
-"nuits_d_ete.html",
-"o_nuit.html",
-"o_paradis.html",
-"osklau_saint_leger.html",
-"osl_10.html",
-"osl_11.html",
-"osl_12.html",
-"osl_2.html",
-"osl_3.html",
-"osl_4.html",
-"osl_6.html",
-"osl_7.html",
-"osl_8.html",
-"osl_9.html",
-"osl_premiere.html",
-"paris.html",
-"pauline.html",
-"petite_soeur.html",
-"petit_papier_1.html",
-"petit_papier_2.html",
-"petit_papier_3.html",
-"petit_papier_4.html",
-"petit_papier_5.html",
-"petit_papier_6.html",
-"petit_papier_7.html",
-"pourquoi_nommer_ce_qui_n_existe_pas.html",
-"r_a_h_11.html",
-"r_a_h_13.html",
-"r_a_h_15.html",
-"r_a_h_17.html",
-"r_a_h_19.html",
-"r_a_h_21.html",
-"r_a_h_23.html",
-"r_a_h_25.html",
-"r_a_h_27.html",
-"r_a_h_29.html",
-"r_a_h_33.html",
-"r_a_h_35.html",
-"r_a_h_39.html",
-"r_a_h_3.html",
-"r_a_h_41.html",
-"r_a_h_43.html",
-"r_a_h_45.html",
-"r_a_h_47.html",
-"r_a_h_5.html",
-"r_a_h_7.html",
-"r_a_h_9.html",
-"reflexion.html",
-"sans_espoir.html",
-"scars_11.html",
-"scars_13.html",
-"scars_15.html",
-"scars_17.html",
-"scars_19.html",
-"scars_1.html",
-"scars_23.html",
-"scars_25.html",
-"scars_27.html",
-"scars_29.html",
-"scars_31.html",
-"scars_33.html",
-"scars_35.html",
-"scars_37.html",
-"scars_39.html",
-"scars_3.html",
-"scars_41.html",
-"scars_43.html",
-"scars_45.html",
-"scars_47.html",
-"scars_51.html",
-"scars_53.html",
-"scars_55.html",
-"scars_57.html",
-"scars_59.html",
-"scars_5.html",
-"scars_61.html",
-"scars_67.html",
-"scars_69.html",
-"scars_71.html",
-"scars_73.html",
-"scars_75.html",
-"scars_77.html",
-"scars_79.html",
-"scars_81.html",
-"scars_83.html",
-"scars_85.html",
-"scars_87.html",
-"scars_91.html",
-"scars_93.html",
-"scars_95.html",
-"scars_97.html",
-"scars_9.html",
-"temps.html",
-"tendre_et_chere.html",
-"traversee.html",
-"un.html",
-"un_jour.html",
-"un_poete_a_la_con.html",
-"utopie.html",
-"vivre_et_revivre.html"
+	"epitres/1.html",
+	"epitres/a_dev_null.html",
+	"epitres/a_la_folie.html",
+	"epitres/a_l_amiable.html",
+	"epitres/a_la_seine.html",
+	"epitres/a_plus_tard.html",
+	"epitres/au_temps.html",
+	"epitres/aux_vents.html",
+	"epitres/betty.html",
+	"epitres/charmante.html",
+	"epitres/epitres_2.html",
+	"epitres/epitres_3.html",
+	"epitres/epitres_4.html",
+	"epitres/epitres_5.html",
+	"epitres/epitres_6.html",
+	"epitres/homme.html",
+	"epitres/le_vide_et_vous.html",
+	"epitres/lune_rousse.html",
+	"epitres/madame.html",
+	"epitres/morphee.html",
+	"epitres/o_nuit.html",
+	"epitres/pauline.html",
+	"epitres/tendre_et_chere.html",
+	"reves_ecrits/a.html",
+	"reves_ecrits/ailleurs.html",
+	"reves_ecrits/a_m.html",
+	"reves_ecrits/antimoine.html",
+	"reves_ecrits/au_revoir.html",
+	"reves_ecrits/aventure.html",
+	"reves_ecrits/b.html",
+	"reves_ecrits/cloud_1.html",
+	"reves_ecrits/cloud_2.html",
+	"reves_ecrits/dam.html",
+	"reves_ecrits/de_l_atome_a_la_molecule.html",
+	"reves_ecrits/demon.html",
+	"reves_ecrits/distraction.html",
+	"reves_ecrits/echo.html",
+	"reves_ecrits/e_l_d_t.html",
+	"reves_ecrits/eve.html",
+	"reves_ecrits/flou.html",
+	"reves_ecrits/fous.html",
+	"reves_ecrits/haine.html",
+	"reves_ecrits/impassible.html",
+	"reves_ecrits/la_chute.html",
+	"reves_ecrits/la_course.html",
+	"reves_ecrits/la_femme.html",
+	"reves_ecrits/la_fleur.html",
+	"reves_ecrits/la_rame.html",
+	"reves_ecrits/la_recette.html",
+	"reves_ecrits/l_ascenceur.html",
+	"reves_ecrits/l_aube.html",
+	"reves_ecrits/l_eau.html",
+	"reves_ecrits/le_jour_d_un_attentat.html",
+	"reves_ecrits/le_premier_jour_bis.html",
+	"reves_ecrits/le_premier_jour.html",
+	"reves_ecrits/l_harmonie_de_la_demence.html",
+	"reves_ecrits/l_ile.html",
+	"reves_ecrits/l_oiseau.html",
+	"reves_ecrits/lupus.html",
+	"reves_ecrits/melodies.html",
+	"reves_ecrits/moustache.html",
+	"reves_ecrits/naissance.html",
+	"reves_ecrits/n_autre_monde.html",
+	"reves_ecrits/nuage_3.html",
+	"reves_ecrits/nuage_4.html",
+	"reves_ecrits/nuits_d_ete.html",
+	"reves_ecrits/o_paradis.html",
+	"reves_ecrits/osklau_saint_leger.html",
+	"reves_ecrits/osl_10.html",
+	"reves_ecrits/osl_11.html",
+	"reves_ecrits/osl_12.html",
+	"reves_ecrits/osl_2.html",
+	"reves_ecrits/osl_3.html",
+	"reves_ecrits/osl_4.html",
+	"reves_ecrits/osl_6.html",
+	"reves_ecrits/osl_7.html",
+	"reves_ecrits/osl_8.html",
+	"reves_ecrits/osl_9.html",
+	"reves_ecrits/osl_premiere.html",
+	"reves_ecrits/paris.html",
+	"reves_ecrits/petite_soeur.html",
+	"reves_ecrits/petit_papier_1.html",
+	"reves_ecrits/petit_papier_2.html",
+	"reves_ecrits/petit_papier_3.html",
+	"reves_ecrits/petit_papier_4.html",
+	"reves_ecrits/petit_papier_5.html",
+	"reves_ecrits/petit_papier_6.html",
+	"reves_ecrits/petit_papier_7.html",
+	"reves_ecrits/pourquoi_nommer_ce_qui_n_existe_pas.html",
+	"reves_ecrits/r_a_h_11.html",
+	"reves_ecrits/r_a_h_13.html",
+	"reves_ecrits/r_a_h_15.html",
+	"reves_ecrits/r_a_h_17.html",
+	"reves_ecrits/r_a_h_19.html",
+	"reves_ecrits/r_a_h_21.html",
+	"reves_ecrits/r_a_h_23.html",
+	"reves_ecrits/r_a_h_25.html",
+	"reves_ecrits/r_a_h_27.html",
+	"reves_ecrits/r_a_h_29.html",
+	"reves_ecrits/r_a_h_33.html",
+	"reves_ecrits/r_a_h_35.html",
+	"reves_ecrits/r_a_h_39.html",
+	"reves_ecrits/r_a_h_3.html",
+	"reves_ecrits/r_a_h_41.html",
+	"reves_ecrits/r_a_h_43.html",
+	"reves_ecrits/r_a_h_45.html",
+	"reves_ecrits/r_a_h_47.html",
+	"reves_ecrits/r_a_h_5.html",
+	"reves_ecrits/r_a_h_7.html",
+	"reves_ecrits/r_a_h_9.html",
+	"reves_ecrits/reflexion.html",
+	"reves_ecrits/sans_espoir.html",
+	"reves_ecrits/scars_11.html",
+	"reves_ecrits/scars_13.html",
+	"reves_ecrits/scars_15.html",
+	"reves_ecrits/scars_17.html",
+	"reves_ecrits/scars_19.html",
+	"reves_ecrits/scars_1.html",
+	"reves_ecrits/scars_23.html",
+	"reves_ecrits/scars_25.html",
+	"reves_ecrits/scars_27.html",
+	"reves_ecrits/scars_29.html",
+	"reves_ecrits/scars_31.html",
+	"reves_ecrits/scars_33.html",
+	"reves_ecrits/scars_35.html",
+	"reves_ecrits/scars_37.html",
+	"reves_ecrits/scars_39.html",
+	"reves_ecrits/scars_3.html",
+	"reves_ecrits/scars_41.html",
+	"reves_ecrits/scars_43.html",
+	"reves_ecrits/scars_45.html",
+	"reves_ecrits/scars_47.html",
+	"reves_ecrits/scars_51.html",
+	"reves_ecrits/scars_53.html",
+	"reves_ecrits/scars_55.html",
+	"reves_ecrits/scars_57.html",
+	"reves_ecrits/scars_59.html",
+	"reves_ecrits/scars_5.html",
+	"reves_ecrits/scars_61.html",
+	"reves_ecrits/scars_67.html",
+	"reves_ecrits/scars_69.html",
+	"reves_ecrits/scars_71.html",
+	"reves_ecrits/scars_73.html",
+	"reves_ecrits/scars_75.html",
+	"reves_ecrits/scars_77.html",
+	"reves_ecrits/scars_79.html",
+	"reves_ecrits/scars_81.html",
+	"reves_ecrits/scars_83.html",
+	"reves_ecrits/scars_85.html",
+	"reves_ecrits/scars_87.html",
+	"reves_ecrits/scars_91.html",
+	"reves_ecrits/scars_93.html",
+	"reves_ecrits/scars_95.html",
+	"reves_ecrits/scars_97.html",
+	"reves_ecrits/scars_9.html",
+	"reves_ecrits/temps.html",
+	"reves_ecrits/traversee.html",
+	"reves_ecrits/un.html",
+	"reves_ecrits/un_jour.html",
+	"reves_ecrits/un_poete_a_la_con.html",
+	"reves_ecrits/utopie.html",
+	"reves_ecrits/vivre_et_revivre.html"
 ]
 
 poem = poems[randInRange(0, poems.length)]
 ////console.log("Poem: ", poem)
-
-home = document.getElementById('home')
+var home = document.getElementById('home')
 if (home) {
-	home.onclick = function () {
-		window.location.href = "poems/" + poem
-	}
+	nextLink = "poems/" + poem	
+	canvas = home
 }
 else 
 {
-	document.body.onclick = function () {
-		window.location.href = poem
-	}
+	canvas = document.getElementById('poem')
+	nextLink = "../" + poem
+}
+var kiosk = window.location.href.split('?')[1] === "kiosk"
+if (kiosk) {
+	setInterval(scrollSmooth, 42)
+	document.getElementById('poem').style.overflowY = 'hidden'
+	nextLink += '?kiosk'
+}
+canvas.onclick = function () {
+	window.location.href = nextLink
 }
 
 
@@ -498,15 +503,41 @@ Array.from(document.querySelectorAll('.letter')).map((letter) => {
 	letter.style.color = colorSet[0]
 })
 
-async function looper() {
-	while (true) {
-		showMe()
-		await delay(randInRange(poemDuration * 4200, poemDuration * 2 * 4200))
-		clearInterval()
+function swapLines() {
+	/**/let tmp = ''
+	for (i = 0; i < poemLines.length - 1;) {
+		if (i == 0) {
+			tmp = poemLines[i].innerHTML
+		}
+		poemLines[i].innerHTML = poemLines[i + 1].innerHTML
+		poemLines[i].style.opacity = 0
+		i++;
 	}
+	poemLines[i].innerHTML = tmp
+	poemLines[i].style.opacity = 1
+	
+	/*looper()*/
+}
+
+async function looper() {
+	ij = 0
+	/*while (ij < poemLines.length * 4.2)
+	{*/
+	await showMe()
+		await delay(randInRange(poemDuration * 4200 , poemDuration * 2 * 4200))
+	ij++
+	/*}*/
 }
 //setInterval(showMe, poemAnimationInterval * 1000)
 // Welcome every one hope you don't get to much frustration, however it's inavoidable if you can't control it
 ////console.log(window.location.href)
-//
+
+function scrollSmooth() {
+	document.getElementById('poem').scrollBy(0, 1)
+}
+
+
+
 looper()
+clearInterval()
+setTimeout(() => { document.body.click()}, randInRange(poemDuration * 42000, poemDuration * 42000 * 2))
