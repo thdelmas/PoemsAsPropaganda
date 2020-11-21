@@ -159,18 +159,18 @@ async function showMe() {
 					// Pass millisceonds
 					timer *= 1000
 					letter.style.opacity = 1
-					letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + "vmin"
+					letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + "vw"
 					if (inlineLettersAll.length <= 1) {
-						letter.style.fontSize = 100 / (poemLines.length * 1.25) + "vmin"
-						letter.style.width = 100 / (poemLines.length * 1.25) + "vmin"
-						letter.style.minWidth = 100 / (poemLines.length * 1.25) + "vmin"
-						letter.style.maxHeight = 100 / (poemLines.length * 1.25) + "vmin"
+						letter.style.fontSize = 100 / (poemLines.length * 1.25) + "vw"
+						letter.style.width = 100 / (poemLines.length * 1.25) + "vw"
+						letter.style.minWidth = 100 / (poemLines.length * 1.25) + "vw"
+						letter.style.maxHeight = 100 / (poemLines.length * 1.25) + "vw"
 					} else {
-						letter.style.fontSize = 100 / inlineLetters.length + "vmin"
-						letter.style.width = 100 / inlineLetters.length + "vmin"
-						letter.style.minWidth = 100 / inlineLetters.length + "vmin"
-						letter.style.maxWidth = 100 / inlineLetters.length + "vmin"
-						letter.style.maxHeight = 100 / inlineLetters.length + "vmin"
+						letter.style.fontSize = 100 / inlineLetters.length + "vw"
+						letter.style.width = 100 / inlineLetters.length + "vw"
+						letter.style.minWidth = 100 / inlineLetters.length + "vw"
+						letter.style.maxWidth = 100 / inlineLetters.length + "vw"
+						letter.style.maxHeight = 100 / inlineLetters.length + "vw"
 					}
 					letter.style.color = colorSet[randInRange(0, 6)]
 					await delay(timer + lineTimer)
@@ -188,19 +188,19 @@ async function showMe() {
 			}
 			await delay(timer + lineTimer)
 			letter.style.opacity = 1
-			letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + "vmin"
+			letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + "vw"
 			if (inlineLettersAll.length <= 1) {
-				letter.style.fontSize = 100 / (poemLines.length * 1.25) + "vmin"
-				letter.style.width = 100 / (poemLines.length * 1.25) + "vmin"
-				letter.style.minWidth = 100 / (poemLines.length * 1.25) + "vmin"
-				letter.style.maxHeight = 100 / (poemLines.length * 1.25) + "vmin"
+				letter.style.fontSize = 100 / (poemLines.length * 1.25) + "vw"
+				letter.style.width = 100 / (poemLines.length * 1.25) + "vw"
+				letter.style.minWidth = 100 / (poemLines.length * 1.25) + "vw"
+				letter.style.maxHeight = 100 / (poemLines.length * 1.25) + "vw"
 			
 			} else {
-				letter.style.fontSize = 100 / inlineLetters.length + "vmin"
-				letter.style.width = 100 / inlineLetters.length + "vmin"
-				letter.style.minWidth = 100 / inlineLetters.length + "vmin"
-				letter.style.maxWidth = 100 / inlineLetters.length + "vmin"
-				letter.style.maxHeight = 100 / inlineLetters.length + "vmin"
+				letter.style.fontSize = 100 / inlineLetters.length + "vw"
+				letter.style.width = 100 / inlineLetters.length + "vw"
+				letter.style.minWidth = 100 / inlineLetters.length + "vw"
+				letter.style.maxWidth = 100 / inlineLetters.length + "vw"
+				letter.style.maxHeight = 100 / inlineLetters.length + "vw"
 			}
 			if (letter.classList.contains('silent')){
 				letter.style.color = colorSet[randInRange(0, 1)]
@@ -255,6 +255,83 @@ var poems = [
 	"epitres/o_nuit.html",
 	"epitres/pauline.html",
 	"epitres/tendre_et_chere.html",
+	"otso_parmi_les_hommes/alienation.html",
+	"otso_parmi_les_hommes/asynchrone.html",
+	"otso_parmi_les_hommes/austere.html",
+	"otso_parmi_les_hommes/belle.html",
+	"otso_parmi_les_hommes/centrifuge.html",
+	"otso_parmi_les_hommes/ce_qu_il_me_reste.html",
+	"otso_parmi_les_hommes/ce_soir.html",
+	"otso_parmi_les_hommes/chronologisme.html",
+	"otso_parmi_les_hommes/comme_un_fou.html",
+	"otso_parmi_les_hommes/darkfly.html",
+	"otso_parmi_les_hommes/defosse.html",
+	"otso_parmi_les_hommes/de_la_peine.html",
+	"otso_parmi_les_hommes/de_la_vie_a_l_amour.html",
+	"otso_parmi_les_hommes/de_ma_rage.html",
+	"otso_parmi_les_hommes/desintegration.html",
+	"otso_parmi_les_hommes/doux_nemesis.html",
+	"otso_parmi_les_hommes/en_vain.html",
+	"otso_parmi_les_hommes/epaves.html",
+	"otso_parmi_les_hommes/erudits.html",
+	"otso_parmi_les_hommes/esthete.html",
+	"otso_parmi_les_hommes/fantome.html",
+	"otso_parmi_les_hommes/imaginez_moi.html",
+	"otso_parmi_les_hommes/interminable.html",
+	"otso_parmi_les_hommes/je_pars.html",
+	"otso_parmi_les_hommes/jeune.html",
+	"otso_parmi_les_hommes/la_folie.html",
+	"otso_parmi_les_hommes/l_an_nuit.html",
+	"otso_parmi_les_hommes/la_peine.html",
+	"otso_parmi_les_hommes/la_vie_s_enfuit.html",
+	"otso_parmi_les_hommes/la_zone.html",
+	"otso_parmi_les_hommes/le_bruit_de_mes_maux.html",
+	"otso_parmi_les_hommes/le_jour_d_hui.html",
+	"otso_parmi_les_hommes/les_etangs.html",
+	"otso_parmi_les_hommes/les_mots.html",
+	"otso_parmi_les_hommes/les_plus_belles_proses.html",
+	"otso_parmi_les_hommes/ma_fougue.html",
+	"otso_parmi_les_hommes/ma_panse.html",
+	"otso_parmi_les_hommes/mon_poete.html",
+	"otso_parmi_les_hommes/nu_et_deprave.html",
+	"otso_parmi_les_hommes/otso_10.html",
+	"otso_parmi_les_hommes/otso_11.html",
+	"otso_parmi_les_hommes/otso_12.html",
+	"otso_parmi_les_hommes/otso_13.html",
+	"otso_parmi_les_hommes/otso_1.html",
+	"otso_parmi_les_hommes/otso_2.html",
+	"otso_parmi_les_hommes/otso_3.html",
+	"otso_parmi_les_hommes/otso_4.html",
+	"otso_parmi_les_hommes/otso_5.html",
+	"otso_parmi_les_hommes/otso_6.html",
+	"otso_parmi_les_hommes/otso_7.html",
+	"otso_parmi_les_hommes/otso_8.html",
+	"otso_parmi_les_hommes/otso_9.html",
+	"otso_parmi_les_hommes/otso.html",
+	"otso_parmi_les_hommes/paris_2018.html",
+	"otso_parmi_les_hommes/paris_sous_la_neige.html",
+	"otso_parmi_les_hommes/pas_si_vils.html",
+	"otso_parmi_les_hommes/perdre_ses_mots.html",
+	"otso_parmi_les_hommes/poeme_poeme.html",
+	"otso_parmi_les_hommes/quelques_mots.html",
+	"otso_parmi_les_hommes/rions.html",
+	"otso_parmi_les_hommes/rouge_vif.html",
+	"otso_parmi_les_hommes/sans_toi.html",
+	"otso_parmi_les_hommes/s_ennuyer.html",
+	"otso_parmi_les_hommes/si.html",
+	"otso_parmi_les_hommes/si_je_m_endors.html",
+	"otso_parmi_les_hommes/si_j_etais_fou.html",
+	"otso_parmi_les_hommes/spleen.html",
+	"otso_parmi_les_hommes/stylo.html",
+	"otso_parmi_les_hommes/sublime_univers.html",
+	"otso_parmi_les_hommes/sur_l_echafaud.html",
+	"otso_parmi_les_hommes/sur_ma_vie.html",
+	"otso_parmi_les_hommes/tacot.html",
+	"otso_parmi_les_hommes/tout_commence_ici.html",
+	"otso_parmi_les_hommes/un_lambeau.html",
+	"otso_parmi_les_hommes/un_poeme_c_est_la_vie.html",
+	"otso_parmi_les_hommes/un_poeme_d_emoi.html",
+	"otso_parmi_les_hommes/venise.html",
 	"reves_ecrits/a.html",
 	"reves_ecrits/ailleurs.html",
 	"reves_ecrits/a_m.html",

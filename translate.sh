@@ -46,3 +46,5 @@ EOF
 shift
 
 done
+
+cd site/poems && find . -name '*.html' | sed 's/\.\///g' | sed 's/^.*$/"\0",/g' | sort
