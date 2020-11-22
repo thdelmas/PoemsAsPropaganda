@@ -27,7 +27,9 @@ cat > $dest <<EOF
 
 <body>
 <table ><tbody id="poem">
+<tr class='line'><td class='letter'>&nbsp</td></tr>
 EOF
+
 
 cat $1 |
   sed 's/^ *//g' |
