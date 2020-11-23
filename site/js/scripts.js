@@ -33,6 +33,13 @@ function delay(delayInms) {
 // My best friend the contingency
 
 function randInRange(min, max) {
+	if (min == max) {
+		return min
+	} else if (min > max) {
+		let tmp4 = min
+		min = max
+		max = tmp4
+	}
 	rand = Math.floor(Math.random() * max)
 	while (rand < min || rand >= max) {
 		rand = Math.floor(Math.random() * max)
@@ -159,18 +166,18 @@ async function showMe() {
 					// Pass millisceonds
 					timer *= 1000
 					letter.style.opacity = 1
-					letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + "vw"
-					if (inlineLettersAll.length <= 1) {
-						letter.style.fontSize = 100 / (poemLines.length * 1.25) + "vw"
-						letter.style.width = 100 / (poemLines.length * 1.25) + "vw"
-						letter.style.minWidth = 100 / (poemLines.length * 1.25) + "vw"
-						letter.style.maxHeight = 100 / (poemLines.length * 1.25) + "vw"
+					letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + sizeRef
+					if (inlineLettersAll.length < 1) {
+						letter.style.fontSize = 100 / (poemLines.length * 1.25) + sizeRef
+						letter.style.width = 100 / (poemLines.length * 1.25) + sizeRef
+						letter.style.minWidth = 100 / (poemLines.length * 1.25) + sizeRef
+						letter.style.maxHeight = 100 / (poemLines.length * 1.25) + sizeRef
 					} else {
-						letter.style.fontSize = 100 / inlineLetters.length + "vw"
-						letter.style.width = 100 / inlineLetters.length + "vw"
-						letter.style.minWidth = 100 / inlineLetters.length + "vw"
-						letter.style.maxWidth = 100 / inlineLetters.length + "vw"
-						letter.style.maxHeight = 100 / inlineLetters.length + "vw"
+						letter.style.fontSize = 100 / inlineLetters.length + sizeRef
+						letter.style.width = 100 / inlineLetters.length + sizeRef
+						letter.style.minWidth = 100 / inlineLetters.length + sizeRef
+						letter.style.maxWidth = 100 / inlineLetters.length + sizeRef
+						letter.style.maxHeight = 100 / inlineLetters.length + sizeRef
 					}
 					letter.style.color = colorSet[randInRange(0, 6)]
 					await delay(timer + lineTimer)
@@ -188,19 +195,19 @@ async function showMe() {
 			}
 			await delay(timer + lineTimer)
 			letter.style.opacity = 1
-			letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + "vw"
-			if (inlineLettersAll.length <= 1) {
-				letter.style.fontSize = 100 / (poemLines.length * 1.25) + "vw"
-				letter.style.width = 100 / (poemLines.length * 1.25) + "vw"
-				letter.style.minWidth = 100 / (poemLines.length * 1.25) + "vw"
-				letter.style.maxHeight = 100 / (poemLines.length * 1.25) + "vw"
+			letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + sizeRef
+			if (inlineLettersAll.length < 1) {
+				letter.style.fontSize = 100 / (poemLines.length * 1.25) + sizeRef
+				letter.style.width = 100 / (poemLines.length * 1.25) + sizeRef
+				letter.style.minWidth = 100 / (poemLines.length * 1.25) + sizeRef
+				letter.style.maxHeight = 100 / (poemLines.length * 1.25) + sizeRef
 			
 			} else {
-				letter.style.fontSize = 100 / inlineLetters.length + "vw"
-				letter.style.width = 100 / inlineLetters.length + "vw"
-				letter.style.minWidth = 100 / inlineLetters.length + "vw"
-				letter.style.maxWidth = 100 / inlineLetters.length + "vw"
-				letter.style.maxHeight = 100 / inlineLetters.length + "vw"
+				letter.style.fontSize = 100 / inlineLetters.length + sizeRef
+				letter.style.width = 100 / inlineLetters.length + sizeRef
+				letter.style.minWidth = 100 / inlineLetters.length + sizeRef
+				letter.style.maxWidth = 100 / inlineLetters.length + sizeRef
+				letter.style.maxHeight = 100 / inlineLetters.length + sizeRef
 			}
 			if (letter.classList.contains('silent')){
 				letter.style.color = colorSet[randInRange(0, 1)]
@@ -479,17 +486,20 @@ var home = document.getElementById('home')
 if (home) {
 	nextLink = "poems/" + poem	
 	canvas = home
+	var sizeRef = 'vw'
 }
 else 
 {
 	canvas = document.getElementById('poem')
 	nextLink = "../" + poem
+	var sizeRef = 'vw'
 }
 var kiosk = window.location.href.split('?')[1] === "kiosk"
 if (kiosk) {
-	setInterval(scrollSmooth, 42)
+	setInterval(scrollSmooth, 84)
 	document.getElementById('poem').style.overflowY = 'hidden'
 	nextLink += '?kiosk'
+	var sizeRef = 'vmin'
 }
 canvas.onclick = function () {
 	window.location.href = nextLink
@@ -617,12 +627,19 @@ async function looper() {
 // Welcome every one hope you don't get to much frustration, however it's inavoidable if you can't control it
 ////console.log(window.location.href)
 
+var upsidedown = 1
 function scrollSmooth() {
-	document.getElementById('poem').scrollBy(0, 1)
+	document.getElementById('poem').scrollBy(0, upsidedown)
 }
 
-
-
+var lastScrollPosition = ''
+setInterval(function () {
+	if (parseFloat(poemLines[0].getBoundingClientRect().y) == parseFloat(lastScrollPosition))
+	{
+		upsidedown *= -1
+	}
+	lastScrollPosition = poemLines[0].getBoundingClientRect().y
+}, 4200)
 looper()
 clearInterval()
-setTimeout(() => { document.body.click()}, randInRange(42000, (poemDuration + 1) * 42000))
+setTimeout(() => { document.body.click()}, randInRange(42000, poemDuration * 1000 + 42000))
