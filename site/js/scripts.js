@@ -480,6 +480,10 @@ var poems = [
 	"reves_ecrits/vivre_et_revivre.html"
 ]
 
+
+// First step of the random road
+// Which poem will be displayed ? lcl
+
 poem = poems[randInRange(0, poems.length)]
 ////console.log("Poem: ", poem)
 var home = document.getElementById('home')
@@ -496,8 +500,10 @@ else
 }
 var kiosk = window.location.href.split('?')[1] === "kiosk"
 if (kiosk) {
-	setInterval(scrollSmooth, 84)
-	document.getElementById('poem').style.overflowY = 'hidden'
+	if (!home) {
+		setInterval(scrollSmooth, 84)
+		document.getElementById('poem').style.overflowY = 'hidden'
+	}
 	nextLink += '?kiosk'
 	var sizeRef = 'vmin'
 }
@@ -506,8 +512,6 @@ canvas.onclick = function () {
 }
 
 
-// First step of the random road
-// Which poem will be displayed ? 
 
 
 // Second step, don't choose a theme 
@@ -629,7 +633,10 @@ async function looper() {
 
 var upsidedown = 1
 function scrollSmooth() {
-	document.getElementById('poem').scrollBy(0, upsidedown)
+	if (!home) {
+		document.getElementById('poem').scrollBy(0, upsidedown)
+	}
+	
 }
 
 var lastScrollPosition = ''
