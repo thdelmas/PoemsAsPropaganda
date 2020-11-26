@@ -174,10 +174,10 @@ async function showMe() {
 						letter.style.minWidth = 100 / (poemLines.length * 1.25) + sizeRef
 
 					} else {
-						letter.style.fontSize = 100 / (inlineLetters.length + 1) + sizeRef
-						letter.style.width = 100 / (inlineLetters.length + 1) + sizeRef
-						letter.style.minWidth = 100 / (inlineLetters.length + 1) + sizeRef
-						letter.style.maxWidth = 100 / (inlineLetters.length + 1) + sizeRef
+						letter.style.fontSize = 100 / inlineLetters.length + sizeRef
+						letter.style.width = 100 / inlineLetters.length + sizeRef
+						letter.style.minWidth = 100 / inlineLetters.length + sizeRef
+						letter.style.maxWidth = 100 / inlineLetters.length + sizeRef
 
 					}
 					letter.style.color = colorSet[randInRange(0, 6)]
@@ -204,10 +204,10 @@ async function showMe() {
 
 			
 			} else {
-				letter.style.fontSize = 100 / (inlineLetters.length + 1) + sizeRef
-				letter.style.width = 100 / (inlineLetters.length + 1) + sizeRef
-				letter.style.minWidth = 100 / (inlineLetters.length + 1) + sizeRef
-				letter.style.maxWidth = 100 / (inlineLetters.length + 1) + sizeRef
+				letter.style.fontSize = 100 / inlineLetters.length + sizeRef
+				letter.style.width = 100 / inlineLetters.length + sizeRef
+				letter.style.minWidth = 100 / inlineLetters.length + sizeRef
+				letter.style.maxWidth = 100 / inlineLetters.length + sizeRef
 			}
 			if (letter.classList.contains('silent')){
 				letter.style.color = colorSet[randInRange(0, 1)]
