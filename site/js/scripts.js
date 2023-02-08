@@ -382,7 +382,6 @@ var poems = [
 "epitres/aux_vents.html",
 "epitres/betty.html",
 "epitres/charmante.html",
-"log" 381L, 12596C                                                                                                                                                                        1,1           Top
 "reves_ecrits/scars_71.html",
 "reves_ecrits/scars_73.html",
 "reves_ecrits/scars_75.html",
