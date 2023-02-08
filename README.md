@@ -1,6 +1,6 @@
 # Poems as propaganda
 
-*Poems as propaganda* through multiple randomized text display
+[*Poems as propaganda*](http://anima.osklau.art) through multiple randomized text display
 
 This project aims to transmit the mental process that's happening to me when I write poetry
 
