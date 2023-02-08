@@ -1,245 +1,45 @@
-function getMedium() {
-	let medium = 0;
-	let i = 0;
-	Array.from(document.querySelectorAll('.line')).map((line) => {
-		medium += Array.from(line.querySelectorAll('.letter')).length
-		i++
-	})
-	medium /= i
-	return medium
-}
-
-function getMaxLen() {
-	let max = 0;
-	Array.from(document.querySelectorAll('.line')).map((line) => {
-		let tmp = Array.from(line.querySelectorAll('.letter')).length
-		if (tmp > max)
-			max = tmp
-	})
-	return max
-}
-
-
-function delay(delayInms) {
-	return new Promise(resolve => {
-		setTimeout(() => {
-			resolve();
-		}, delayInms);
-	});
-}
-
-
-
-// My best friend the contingency
-
-function randInRange(min, max) {
-	if (min == max) {
-		return min
-	} else if (min > max) {
-		let tmp4 = min
-		min = max
-		max = tmp4
-	}
-	rand = Math.floor(Math.random() * max)
-	while (rand < min || rand >= max) {
-		rand = Math.floor(Math.random() * max)
-	}
-	return rand
-}
-
-var first_loop = true
-var poemLines = Array.from(document.querySelectorAll('.line'))
-
-async function showMe() {
-
-	const poemLetters = Array.from(document.querySelectorAll('.letter:not(.silent)'))
-	const poemLettersFull = Array.from(document.querySelectorAll('.letter'))
-	const poemLineInterval = (poemDuration + 1) / poemLines.length
-	const poemLetterInterval = (poemDuration + 1) / poemLetters.length
-	//	console.log("Poem Duration: ", poemDuration)
-	//	console.log("Poem Interval: ", poemLineInterval)
-
-	// For each line
-	// Dice line speed
-
-
-	let globalLetterPosition = 0
-	let linePosition = 0
-	let is_US = poemOrder.united
-	let random_l = randInRange(0,2)
-	poemHTML = document.getElementById('poem')
-	const promise = poemLines.map(async (line) => {
-		linePosition++
-		let lineTimer = 0
-		let lineNumber = poemLines.length
-		// Print row
-		lineTimer += linePosition * poemLineInterval * (poemOrder.start % 2)
-		// Print reverse
-		lineTimer += (lineNumber - linePosition + 1) * poemLineInterval * (poemOrder.end % 2) 
-		// Print Random
-		lineTimer += Math.random() * (poemDuration + 1) * (poemOrder.random % 2) / linePosition
-		// XFactor
-		xFactor = ((poemOrder.start % 2) + (poemOrder.end % 2) + (poemOrder.random % 2)) % 3
-		if (xFactor > 0) {
-			lineTimer /= xFactor
-		}
-		lineTimer *= 1000
-		const inlineLettersAll = Array.from(line.querySelectorAll('.letter:not(.silent)'))
-		const inlineLetters = Array.from(line.querySelectorAll('.letter'))
-		const lineDuration = Math.abs(Math.random() * ((poemDuration + 1) * (poemOrder.united % 2)) + (poemLineInterval * ((poemOrder.united + 1) % 2)) - Math.random())
-		//		//		console.log("Line speed (seconds): ", lineDuration)
-		const inlineLetterInterval = lineDuration / inlineLetters.length
-
-
-
-		// Dice line order
-		// This will be used for the appear/disappear thing
-		// 4 binary values combined drive to 255 different way to show a poem
-
-		if (poemOrder.united == 1 && poemOrder.random == 0)
-			isnot_US = 0
-		else
-			isnot_US = 1
-		let lineOrder = {
-			start: (randInRange(0,100) >= 42) * isnot_US + poemOrder.start * ((isnot_US + 1) % 2),
-			end: (randInRange(0,100) <= 42) * isnot_US + poemOrder.end * ((isnot_US + 1) % 2),
-			random: (randInRange(0,100) <= 30) * isnot_US + poemOrder.random * ((isnot_US + 1) % 2),
-			united: (randInRange(0, 100) <= 70) * isnot_US + ((isnot_US + 1) % 2) * poemOrder.united,
-		}
-		//		console.log("Line order", lineOrder)
-
-
-
-		// Dice line color speed
-
-		lineAnimationInterval = randInRange(0, lineDuration)
-		//		//	console.log("Line animation interval: ", lineAnimationInterval)
-
-
-		line.style.minWidth = "100vw"
-		line.style.width = "100vw"
-		if (inlineLettersAll.length <= 1)
-		{
-			line.style.maxHeight = 100 / (poemLines.length * 1.25) + "vmin"
-		} else {
-			line.style.maxHeight = (inlineLetters.length / poemLettersFull.length) * 100
-	}
-			// MAGICS
-
-		let inlineLetterPosition = 0
-		const promise2 = inlineLetters.map(async (letter) => {
-			globalLetterPosition++
-			inlineLetterPosition++
-			let letterPosition = globalLetterPosition * (lineOrder.united % 2) + inlineLetterPosition * ((lineOrder.united + 1) % 2)
-			let letterInterval = poemLetterInterval * (lineOrder.united % 2) + inlineLetterInterval * ((lineOrder.united + 1) % 2) 
-			let letterNumber = poemLetters.length * (lineOrder.united % 2) + inlineLetters.length * ((lineOrder.united + 1) % 2)
-			let timer = 0
-			// Print row
-			timer += letterPosition * letterInterval * (lineOrder.start % 2)
-			// Print reverse
-			timer += (letterNumber - letterPosition + 1) * letterInterval * (lineOrder.end % 2) 
-			// Print Random
-			timer += Math.random() * lineDuration * (lineOrder.random % 2) / letterPosition
-			//			console.log(lineDuration)
-			// XFactor
-			xFactor = ((lineOrder.start % 2) + (lineOrder.end % 2) + (lineOrder.random % 2)) % 3
-			if (xFactor > 0) {
-				timer /= xFactor
-			}
-			// Pass millisceonds
-			timer *= 1000
-			if (first_loop) {
-				letter.onmouseover = async function () {
-					console.log("over")
-					let timer = 0
-					// Print row
-					timer += letterPosition * letterInterval * (lineOrder.start % 2)
-					// Print reverse
-					timer += (letterNumber - letterPosition + 1) * letterInterval * (lineOrder.end % 2) 
-					// Print Random
-					timer += Math.random() * lineDuration * (lineOrder.random % 2) / letterNumber
-					//					console.log(lineDuration)
-					// XFactor
-					xFactor = ((lineOrder.start % 2) + (lineOrder.end % 2) + (lineOrder.random % 2)) % 3
-					if (xFactor > 0) {
-						timer /= xFactor
-					}
-					// Pass millisceonds
-					timer *= 1000
-					letter.style.opacity = 1
-					letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + sizeRef
-					if (inlineLettersAll.length <= 1) {
-						letter.style.fontSize = 100 / (poemLines.length * 1.25) + sizeRef
-						letter.style.width = 100 / (poemLines.length * 1.25) + sizeRef
-						letter.style.minWidth = 100 / (poemLines.length * 1.25) + sizeRef
-
-					} else {
-						letter.style.fontSize = 100 / inlineLetters.length + sizeRef
-						letter.style.width = 100 / inlineLetters.length + sizeRef
-						letter.style.minWidth = 100 / inlineLetters.length + sizeRef
-						letter.style.maxWidth = 100 / inlineLetters.length + sizeRef
-
-					}
-					letter.style.color = colorSet[randInRange(0, 6)]
-					await delay(timer + lineTimer)
-					if (letter.classList.contains('silent')){
-						letter.style.color = colorSet[randInRange(0, 2)]
-					}
-					else {
-						letter.style.color = colorSet[randInRange(1, 3)]
-					}
-					await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
-					letter.style.color = colorSet[randInRange(0, 2)]
-					await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
-					letter.style.color = colorSet[randInRange(1, 3)]
-				}
-			}
-			await delay(timer + lineTimer)
-			letter.style.opacity = 1
-			letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + sizeRef
-			if (inlineLettersAll.length <= 1) {
-				letter.style.fontSize = 100 / (poemLines.length * 1.25) + sizeRef
-				letter.style.width = 100 / (poemLines.length * 1.25) + sizeRef
-				letter.style.minWidth = 100 / (poemLines.length * 1.25) + sizeRef
-
-			
-			} else {
-				letter.style.fontSize = 100 / inlineLetters.length + sizeRef
-				letter.style.width = 100 / inlineLetters.length + sizeRef
-				letter.style.minWidth = 100 / inlineLetters.length + sizeRef
-				letter.style.maxWidth = 100 / inlineLetters.length + sizeRef
-			}
-			if (letter.classList.contains('silent')){
-				letter.style.color = colorSet[randInRange(0, 1)]
-			}
-			else {
-				letter.style.color = colorSet[randInRange(1, 3)]
-			}
-			await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
-			letter.style.color = colorSet[randInRange(0, 6)]
-			await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
-			letter.style.color = colorSet[randInRange(1, 3)]
-		})
-		await promise2
-		line.style.opacity = 1
-	})
-
-	await Promise.all(promise)
-}
-
-
-
-
-
-// Contingency is really important for me because it's what we face every day especially when we are trying to do something specific,
-// In my case trying to write poems
-
-// Why do you care don't you like poetry ? Do you like just this one ?
-
-// Long and dirty list of my personnal productions
-
 var poems = [
-	"epitres/1.html",
+"en_attendant_la_mort/contretemps_10.html",
+"en_attendant_la_mort/contretemps_11.html",
+"en_attendant_la_mort/contretemps_12.html",
+"en_attendant_la_mort/contretemps_13.html",
+"en_attendant_la_mort/contretemps_14.html",
+"en_attendant_la_mort/contretemps_15.html",
+"en_attendant_la_mort/contretemps_16.html",
+"en_attendant_la_mort/contretemps_17.html",
+"en_attendant_la_mort/contretemps_18.html",
+"en_attendant_la_mort/contretemps_19.html",
+"en_attendant_la_mort/contretemps_1.html",
+"en_attendant_la_mort/contretemps_20.html",
+"en_attendant_la_mort/contretemps_21.html",
+"en_attendant_la_mort/contretemps_22.html",
+"en_attendant_la_mort/contretemps_23.html",
+"en_attendant_la_mort/contretemps_24.html",
+"en_attendant_la_mort/contretemps_25.html",
+"en_attendant_la_mort/contretemps_26.html",
+"en_attendant_la_mort/contretemps_27.html",
+"en_attendant_la_mort/contretemps_28.html",
+"en_attendant_la_mort/contretemps_29.html",
+"en_attendant_la_mort/contretemps_2.html",
+"en_attendant_la_mort/contretemps_30.html",
+"en_attendant_la_mort/contretemps_31.html",
+"en_attendant_la_mort/contretemps_32.html",
+"en_attendant_la_mort/contretemps_33.html",
+"en_attendant_la_mort/contretemps_34.html",
+"en_attendant_la_mort/contretemps_35.html",
+"en_attendant_la_mort/contretemps_36.html",
+"en_attendant_la_mort/contretemps_37.html",
+"en_attendant_la_mort/contretemps_38.html",
+"en_attendant_la_mort/contretemps_39.html",
+"en_attendant_la_mort/contretemps_3.html",
+"en_attendant_la_mort/contretemps_40.html",
+"en_attendant_la_mort/contretemps_4.html",
+"en_attendant_la_mort/contretemps_5.html",
+"en_attendant_la_mort/contretemps_6.html",
+"en_attendant_la_mort/contretemps_7.html",
+"en_attendant_la_mort/contretemps_8.html",
+"en_attendant_la_mort/contretemps_9.html",
+"epitres/1.html",
 "epitres/a_dev_null.html",
 "epitres/a_la_folie.html",
 "epitres/a_l_amiable.html",
@@ -532,6 +332,57 @@ var poems = [
 "reves_ecrits/scars_61.html",
 "reves_ecrits/scars_67.html",
 "reves_ecrits/scars_69.html",
+"en_attendant_la_mort/contretemps_10.html",
+"en_attendant_la_mort/contretemps_11.html",
+"en_attendant_la_mort/contretemps_12.html",
+"en_attendant_la_mort/contretemps_13.html",
+"en_attendant_la_mort/contretemps_14.html",
+"en_attendant_la_mort/contretemps_15.html",
+"en_attendant_la_mort/contretemps_16.html",
+"en_attendant_la_mort/contretemps_17.html",
+"en_attendant_la_mort/contretemps_18.html",
+"en_attendant_la_mort/contretemps_19.html",
+"en_attendant_la_mort/contretemps_1.html",
+"en_attendant_la_mort/contretemps_20.html",
+"en_attendant_la_mort/contretemps_21.html",
+"en_attendant_la_mort/contretemps_22.html",
+"en_attendant_la_mort/contretemps_23.html",
+"en_attendant_la_mort/contretemps_24.html",
+"en_attendant_la_mort/contretemps_25.html",
+"en_attendant_la_mort/contretemps_26.html",
+"en_attendant_la_mort/contretemps_27.html",
+"en_attendant_la_mort/contretemps_28.html",
+"en_attendant_la_mort/contretemps_29.html",
+"en_attendant_la_mort/contretemps_2.html",
+"en_attendant_la_mort/contretemps_30.html",
+"en_attendant_la_mort/contretemps_31.html",
+"en_attendant_la_mort/contretemps_32.html",
+"en_attendant_la_mort/contretemps_33.html",
+"en_attendant_la_mort/contretemps_34.html",
+"en_attendant_la_mort/contretemps_35.html",
+"en_attendant_la_mort/contretemps_36.html",
+"en_attendant_la_mort/contretemps_37.html",
+"en_attendant_la_mort/contretemps_38.html",
+"en_attendant_la_mort/contretemps_39.html",
+"en_attendant_la_mort/contretemps_3.html",
+"en_attendant_la_mort/contretemps_40.html",
+"en_attendant_la_mort/contretemps_4.html",
+"en_attendant_la_mort/contretemps_5.html",
+"en_attendant_la_mort/contretemps_6.html",
+"en_attendant_la_mort/contretemps_7.html",
+"en_attendant_la_mort/contretemps_8.html",
+"en_attendant_la_mort/contretemps_9.html",
+"epitres/1.html",
+"epitres/a_dev_null.html",
+"epitres/a_la_folie.html",
+"epitres/a_l_amiable.html",
+"epitres/a_la_seine.html",
+"epitres/a_plus_tard.html",
+"epitres/au_temps.html",
+"epitres/aux_vents.html",
+"epitres/betty.html",
+"epitres/charmante.html",
+"log" 381L, 12596C                                                                                                                                                                        1,1           Top
 "reves_ecrits/scars_71.html",
 "reves_ecrits/scars_73.html",
 "reves_ecrits/scars_75.html",
@@ -581,6 +432,246 @@ var poems = [
 "toopt/toopt_9_aporie.html",
 "toopt/toopt_9_okami.html"
 ]
+
+function getMedium() {
+	let medium = 0;
+	let i = 0;
+	Array.from(document.querySelectorAll('.line')).map((line) => {
+		medium += Array.from(line.querySelectorAll('.letter')).length
+		i++
+	})
+	medium /= i
+	return medium
+}
+
+function getMaxLen() {
+	let max = 0;
+	Array.from(document.querySelectorAll('.line')).map((line) => {
+		let tmp = Array.from(line.querySelectorAll('.letter')).length
+		if (tmp > max)
+			max = tmp
+	})
+	return max
+}
+
+
+function delay(delayInms) {
+	return new Promise(resolve => {
+		setTimeout(() => {
+			resolve();
+		}, delayInms);
+	});
+}
+
+
+
+// My best friend the contingency
+
+function randInRange(min, max) {
+	if (min == max) {
+		return min
+	} else if (min > max) {
+		let tmp4 = min
+		min = max
+		max = tmp4
+	}
+	rand = Math.floor(Math.random() * max)
+	while (rand < min || rand >= max) {
+		rand = Math.floor(Math.random() * max)
+	}
+	return rand
+}
+
+var first_loop = true
+var poemLines = Array.from(document.querySelectorAll('.line'))
+
+async function showMe() {
+
+	const poemLetters = Array.from(document.querySelectorAll('.letter:not(.silent)'))
+	const poemLettersFull = Array.from(document.querySelectorAll('.letter'))
+	const poemLineInterval = (poemDuration + 1) / poemLines.length
+	const poemLetterInterval = (poemDuration + 1) / poemLetters.length
+	//	console.log("Poem Duration: ", poemDuration)
+	//	console.log("Poem Interval: ", poemLineInterval)
+
+	// For each line
+	// Dice line speed
+
+
+	let globalLetterPosition = 0
+	let linePosition = 0
+	let is_US = poemOrder.united
+	let random_l = randInRange(0,2)
+	poemHTML = document.getElementById('poem')
+	const promise = poemLines.map(async (line) => {
+		linePosition++
+		let lineTimer = 0
+		let lineNumber = poemLines.length
+		// Print row
+		lineTimer += linePosition * poemLineInterval * (poemOrder.start % 2)
+		// Print reverse
+		lineTimer += (lineNumber - linePosition + 1) * poemLineInterval * (poemOrder.end % 2) 
+		// Print Random
+		lineTimer += Math.random() * (poemDuration + 1) * (poemOrder.random % 2) / linePosition
+		// XFactor
+		xFactor = ((poemOrder.start % 2) + (poemOrder.end % 2) + (poemOrder.random % 2)) % 3
+		if (xFactor > 0) {
+			lineTimer /= xFactor
+		}
+		lineTimer *= 1000
+		const inlineLettersAll = Array.from(line.querySelectorAll('.letter:not(.silent)'))
+		const inlineLetters = Array.from(line.querySelectorAll('.letter'))
+		const lineDuration = Math.abs(Math.random() * ((poemDuration + 1) * (poemOrder.united % 2)) + (poemLineInterval * ((poemOrder.united + 1) % 2)) - Math.random())
+		//		//		console.log("Line speed (seconds): ", lineDuration)
+		const inlineLetterInterval = lineDuration / inlineLetters.length
+
+
+
+		// Dice line order
+		// This will be used for the appear/disappear thing
+		// 4 binary values combined drive to 255 different way to show a poem
+
+		if (poemOrder.united == 1 && poemOrder.random == 0)
+			isnot_US = 0
+		else
+			isnot_US = 1
+		let lineOrder = {
+			start: (randInRange(0,100) >= 42) * isnot_US + poemOrder.start * ((isnot_US + 1) % 2),
+			end: (randInRange(0,100) <= 42) * isnot_US + poemOrder.end * ((isnot_US + 1) % 2),
+			random: (randInRange(0,100) <= 30) * isnot_US + poemOrder.random * ((isnot_US + 1) % 2),
+			united: (randInRange(0, 100) <= 70) * isnot_US + ((isnot_US + 1) % 2) * poemOrder.united,
+		}
+		//		console.log("Line order", lineOrder)
+
+
+
+		// Dice line color speed
+
+		lineAnimationInterval = randInRange(0, lineDuration)
+		//		//	console.log("Line animation interval: ", lineAnimationInterval)
+
+
+		line.style.minWidth = "100vw"
+		line.style.width = "100vw"
+		if (inlineLettersAll.length <= 1)
+		{
+			line.style.maxHeight = 100 / (poemLines.length * 1.25) + "vmin"
+		} else {
+			line.style.maxHeight = (inlineLetters.length / poemLettersFull.length) * 100
+	}
+			// MAGICS
+
+		let inlineLetterPosition = 0
+		const promise2 = inlineLetters.map(async (letter) => {
+			globalLetterPosition++
+			inlineLetterPosition++
+			let letterPosition = globalLetterPosition * (lineOrder.united % 2) + inlineLetterPosition * ((lineOrder.united + 1) % 2)
+			let letterInterval = poemLetterInterval * (lineOrder.united % 2) + inlineLetterInterval * ((lineOrder.united + 1) % 2) 
+			let letterNumber = poemLetters.length * (lineOrder.united % 2) + inlineLetters.length * ((lineOrder.united + 1) % 2)
+			let timer = 0
+			// Print row
+			timer += letterPosition * letterInterval * (lineOrder.start % 2)
+			// Print reverse
+			timer += (letterNumber - letterPosition + 1) * letterInterval * (lineOrder.end % 2) 
+			// Print Random
+			timer += Math.random() * lineDuration * (lineOrder.random % 2) / letterPosition
+			//			console.log(lineDuration)
+			// XFactor
+			xFactor = ((lineOrder.start % 2) + (lineOrder.end % 2) + (lineOrder.random % 2)) % 3
+			if (xFactor > 0) {
+				timer /= xFactor
+			}
+			// Pass millisceonds
+			timer *= 1000
+			if (first_loop) {
+				letter.onmouseover = async function () {
+					console.log("over")
+					let timer = 0
+					// Print row
+					timer += letterPosition * letterInterval * (lineOrder.start % 2)
+					// Print reverse
+					timer += (letterNumber - letterPosition + 1) * letterInterval * (lineOrder.end % 2) 
+					// Print Random
+					timer += Math.random() * lineDuration * (lineOrder.random % 2) / letterNumber
+					//					console.log(lineDuration)
+					// XFactor
+					xFactor = ((lineOrder.start % 2) + (lineOrder.end % 2) + (lineOrder.random % 2)) % 3
+					if (xFactor > 0) {
+						timer /= xFactor
+					}
+					// Pass millisceonds
+					timer *= 1000
+					letter.style.opacity = 1
+					letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + sizeRef
+					if (inlineLettersAll.length <= 1) {
+						letter.style.fontSize = 100 / (poemLines.length * 1.25) + sizeRef
+						letter.style.width = 100 / (poemLines.length * 1.25) + sizeRef
+						letter.style.minWidth = 100 / (poemLines.length * 1.25) + sizeRef
+
+					} else {
+						letter.style.fontSize = 100 / inlineLetters.length + sizeRef
+						letter.style.width = 100 / inlineLetters.length + sizeRef
+						letter.style.minWidth = 100 / inlineLetters.length + sizeRef
+						letter.style.maxWidth = 100 / inlineLetters.length + sizeRef
+
+					}
+					letter.style.color = colorSet[randInRange(0, 6)]
+					await delay(timer + lineTimer)
+					if (letter.classList.contains('silent')){
+						letter.style.color = colorSet[randInRange(0, 2)]
+					}
+					else {
+						letter.style.color = colorSet[randInRange(1, 3)]
+					}
+					await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
+					letter.style.color = colorSet[randInRange(0, 2)]
+					await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
+					letter.style.color = colorSet[randInRange(1, 3)]
+				}
+			}
+			await delay(timer + lineTimer)
+			letter.style.opacity = 1
+			letter.style.maxWidth = (100 * 100) / (poemLines.length * inlineLetters.length) + sizeRef
+			if (inlineLettersAll.length <= 1) {
+				letter.style.fontSize = 100 / (poemLines.length * 1.25) + sizeRef
+				letter.style.width = 100 / (poemLines.length * 1.25) + sizeRef
+				letter.style.minWidth = 100 / (poemLines.length * 1.25) + sizeRef
+
+			
+			} else {
+				letter.style.fontSize = 100 / inlineLetters.length + sizeRef
+				letter.style.width = 100 / inlineLetters.length + sizeRef
+				letter.style.minWidth = 100 / inlineLetters.length + sizeRef
+				letter.style.maxWidth = 100 / inlineLetters.length + sizeRef
+			}
+			if (letter.classList.contains('silent')){
+				letter.style.color = colorSet[randInRange(0, 1)]
+			}
+			else {
+				letter.style.color = colorSet[randInRange(1, 3)]
+			}
+			await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
+			letter.style.color = colorSet[randInRange(0, 6)]
+			await delay(randInRange((poemDuration + 1) * 4200, (poemDuration + 1) * 21000))
+			letter.style.color = colorSet[randInRange(1, 3)]
+		})
+		await promise2
+		line.style.opacity = 1
+	})
+
+	await Promise.all(promise)
+}
+
+
+
+
+
+// Contingency is really important for me because it's what we face every day especially when we are trying to do something specific,
+// In my case trying to write poems
+
+// Why do you care don't you like poetry ? Do you like just this one ?
+
+// Long and dirty list of my personnal productions
 
 
 // First step of the random road
