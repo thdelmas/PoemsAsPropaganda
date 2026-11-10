@@ -4,10 +4,11 @@
 while [ "$1" ]
 do
 dest="site/poems/$(echo $1 | sed 's/^poems\///g'| cut -d'.' -f1).html"
+up=".."  # one directory level up, relative to the generated page
 parent_path=""
 for i in $(dirname $1 | tr '/' ' ')
 do
-  parent_path="../$parent_path"
+  parent_path="$up/$parent_path"
 done
 
 cat > $dest <<EOF
